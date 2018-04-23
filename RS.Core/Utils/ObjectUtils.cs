@@ -5,6 +5,8 @@ using System.Text;
 using System.Reflection;
 using System.Collections;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
+using RS.Core.Common;
 
 namespace RS.Core
 {
@@ -33,10 +35,9 @@ namespace RS.Core
                 v = "";
 
             
-            int iz = 0;
             if (value is bool) return (bool)value ? 1 : 0;
 
-            Int32.TryParse(v, out iz);
+            Int32.TryParse(v, out int iz);
             if (value.ToString() != "0" && iz == 0 && value.GetType().GetTypeInfo().IsEnum)
             {
                 try
@@ -59,8 +60,7 @@ namespace RS.Core
         {
             string vstr = z.ToStringValue();
             if (vstr.IsWhiteSpace()) return 0;
-            double fz = 0;
-            double.TryParse(vstr, out fz);
+            double.TryParse(vstr, out double fz);
             return fz;
         }
         /// <summary>
@@ -83,8 +83,7 @@ namespace RS.Core
 
             if (vstr.IsWhiteSpace()) return 0;
 
-            long fz = 0;
-            long.TryParse(vstr, out fz);
+            long.TryParse(vstr, out long fz);
             return fz;
         }
 
@@ -127,8 +126,7 @@ namespace RS.Core
         {
             if (z.IsNullOrDBNull()) return Guid.Empty;
             if (z.ToString() == "") return Guid.Empty;
-            Guid id = Guid.Empty;
-            Guid.TryParse(z.ToString(), out id);
+            Guid.TryParse(z.ToString(), out Guid id);
             return id;
         }
         /// <summary>
@@ -140,8 +138,7 @@ namespace RS.Core
         {
             string vstr = z.ToStringValue();
             if (vstr.IsWhiteSpace()) return 0;
-            decimal dz = 0;
-            Decimal.TryParse(vstr, out dz);
+            Decimal.TryParse(vstr, out decimal dz);
             return dz;
         }
         /// <summary>
@@ -153,8 +150,7 @@ namespace RS.Core
         {
             string vstr = z.ToStringValue();
             if (vstr.IsWhiteSpace()) return 0;
-            float fz = 0;
-            Single.TryParse(vstr.ToString(), out fz);
+            Single.TryParse(vstr.ToString(), out float fz);
             return fz;
         }
         /// <summary>
@@ -165,8 +161,7 @@ namespace RS.Core
         public static DateTime ToDateTime(this object z)
         {
             if (z.IsNullOrDBNull()) return DateTime.MinValue;
-            DateTime dz = DateTime.MinValue;
-            DateTime.TryParse(z.ToString(), out dz);
+            DateTime.TryParse(z.ToString(), out DateTime dz);
             return dz;
         }
         /// <summary>
@@ -207,6 +202,12 @@ namespace RS.Core
             return b;
         }
         #endregion
+
+        #region JSON对象序列化
+        public static JsonUtil JSON { get; } = new JsonUtil();
+        #endregion
+
+
         /// <summary>
         /// 将object对象转为json对象定义字符串(只对公共属性、字段有效)
         /// </summary>
@@ -534,8 +535,21 @@ namespace RS.Core
             {
                 if (RecordFieldValue is T)
                     return (T)RecordFieldValue;
-                else
+                else if (RecordFieldValue is JToken)
                 {
+                    T v;
+                    JToken jo = (JToken)RecordFieldValue;
+                    try
+                    {
+                        v = (T)jo.ToObject<T>();
+                    }
+                    catch
+                    {
+                        v = (T)GetObjectValue<T>(jo.ToObject(typeof(object)));
+                    }
+                    return v;
+                }
+                else {
                     T v;
                     try
                     {

@@ -124,9 +124,11 @@ namespace RS.Core
         string Substring(string FieldExp, string BeginIndexExp, string LengthExp);
         string Upper(string FieldExp);
         #endregion
+        
         #region 一些语法表达式
         string CaseWhen(string elseValueExp="",params CaseWhenUtils[] CaseWhens);
         #endregion
+
         #region SQL语句中相关过滤字符表达式
         string LikeSqlExp(string FieldExp, object ValueExp);
         string LeftLikeSqlExp(string FieldExp, object ValueExp);
@@ -171,6 +173,7 @@ namespace RS.Core
         string Top(int z);
 
         string GetPageSQL(string SelectCommand, PageInfo page, IDbDriver db, List<OrderItem> Orders = null);
+
         string GetPageSQL(string SelectCommand, int PageIndex, int PageSize, List<OrderItem> Orders=null);
     }
 

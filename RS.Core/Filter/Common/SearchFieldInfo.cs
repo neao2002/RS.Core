@@ -13,11 +13,11 @@ namespace RS.Core.Filter
         /// <summary>
         /// 检索的字段名
         /// </summary>
-        public string FieldName { get; set; }
+        public string FieldName { get; set; } = "";
         /// <summary>
         /// 该项字段的标题说明
         /// </summary>
-        public string Caption { get; set; }
+        public string Caption { get; set; } = "";
     }
 
     /// <summary>

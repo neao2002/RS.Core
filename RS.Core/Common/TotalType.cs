@@ -1,6 +1,9 @@
 ﻿
 namespace RS.Core
 {
+    /// <summary>
+    /// 列统计类型
+    /// </summary>
     public enum TotalType
     {
         /// <summary>

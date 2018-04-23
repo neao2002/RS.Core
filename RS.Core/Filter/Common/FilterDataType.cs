@@ -38,13 +38,13 @@ namespace RS.Core.Filter
         /// </summary>
         XPath=6,
         /// <summary>
-        /// 打开窗口选择指定内容并可编辑的数据类型
+        /// 打开窗口选择指定内容并可编辑的数据类型(已弃用)
         /// </summary>
         OpenWinString=7,
         /// <summary>
-        /// 打开窗口选择指定ID的不可编辑的数据类型
+        /// 打开窗口选择指定ID的不可编辑的数据类型(已弃用)
         /// </summary>
-        OpenWinGuid=8,
+        OpenWinGuid = 8,
         /// <summary>
         /// 自定义函数参数类
         /// </summary>

@@ -16,63 +16,42 @@ namespace RS.Core.Filter
         public ListFilter()
         {
             ///高级查询项，用于高级查询显示
-            pendingItems = new List<SearchItem>();
+            PendingItems = new List<SearchItem>();
             ///查询过滤项
-            filterItems = new List<SearchItem>();
+            FilterItems = new List<SearchItem>();
             ///普通查询项
             NormalItems = new List<SearchItem>();
 
-            shortcutItems = new List<SearchItem>();
+            ShortcutItems = new List<SearchItem>();
             //自定义查询条件
-            selfDefineSqlFilter = "";
+            SelfDefineSqlFilter = "";
         }
-        private List<SearchItem> normalItems;//普通查询条件项
-        private List<SearchItem> pendingItems;//待查询的过滤条件
-        private List<SearchItem> filterItems;//已设好的查询条件
-        private List<SearchItem> shortcutItems;//已设好的快捷查询
 
-        private string selfDefineSqlFilter;//自定义过滤条件
         /// <summary>
         /// 待查询的过滤条件
         /// </summary>
-        public List<SearchItem> PendingItems
-        {
-            get { return pendingItems; }
-            set { pendingItems = value; }
-        }
+        public List<SearchItem> PendingItems { get; set; }
         /// <summary>
         /// 普通条件查询项
         /// </summary>
-        public List<SearchItem> NormalItems
-        {
-            get { return normalItems; }
-            set { normalItems = value; }
-        }
+        public List<SearchItem> NormalItems { get; set; }
 
         /// <summary>
         /// 已设好的查询条件
         /// </summary>
-        public List<SearchItem> FilterItems
-        {
-            get { return filterItems; }
-            set { filterItems = value; }
-        }
+        public List<SearchItem> FilterItems { get; set; }
         /// <summary>
         /// 快捷查询条件项
         /// </summary>
-        public List<SearchItem> ShortcutItems
-        {
-            get { return shortcutItems; }
-            set { shortcutItems = value; }
-        }
+        public List<SearchItem> ShortcutItems { get; set; }
         /// <summary>
         /// 自定义查询条件
         /// </summary>
-        public string SelfDefineSqlFilter
-        {
-            get { return selfDefineSqlFilter; }
-            set { selfDefineSqlFilter = value; }
-        }
+        public string SelfDefineSqlFilter { get; set; }
+
+        internal List<string> CustomSqlFilters { get; set; } = new List<string>();//自定义查询条件，即通过各项直接构成SQL中where查询项，并以and链接而成，如果其中有项为空，则会出异常，类似于“and and”
+
+
 
         #region 得出SQL语句过滤条件
         public string ToSqlFilter()
@@ -84,13 +63,13 @@ namespace RS.Core.Filter
         /// 将当前过滤条件项转换为指定SQL过滤条件字符
         /// </summary>
         /// <returns></returns>
-        public string ToSqlFilter(DbUtils Db)
+        public string ToSqlFilter(IDbDriver Db)
         {
             StringBuilder SqlFilter = new StringBuilder();
             bool isHeader = true;
-            for (int i = 0; i < filterItems.Count; i++)
+            for (int i = 0; i < FilterItems.Count; i++)
             {
-                SearchItem item = filterItems[i];
+                SearchItem item = FilterItems[i];
                 if (item.SqlPrefixType == SqlPrefixType.EndByGroup)
                 {
                     if (!isHeader)
@@ -109,13 +88,20 @@ namespace RS.Core.Filter
                     if (isHeader) isHeader = false;
                 }
             }
+
             string sql = SqlFilter.ToString();
-            if (sql.Length > 0)
-            {
-                return string.Format("{0} {1}", sql, string.IsNullOrEmpty(selfDefineSqlFilter.Trim()) ? "" : string.Format(" {0} ({1})",Db.Function.AndSqlExp(), selfDefineSqlFilter));
-            }
-            else
-                return selfDefineSqlFilter;
+
+            List<string> wheres = new List<string>();
+            if (sql.IsNotWhiteSpace())
+                wheres.Add($"({sql})");
+
+            if (CustomSqlFilters.HasElement())
+                wheres.AddRange(CustomSqlFilters.ConvertAll(item=>$"({item})"));
+
+            if (SelfDefineSqlFilter.IsNotWhiteSpace())
+                wheres.Add($"{SelfDefineSqlFilter}");
+
+            return string.Join($" {Db.Function.AndSqlExp()} ", wheres);
         }
 
         #endregion
@@ -139,9 +125,9 @@ namespace RS.Core.Filter
             FilterCompCollection Comps = new FilterCompCollection();
             FilterCompCollection curComps = Comps; //当前检索项
             FilterCompCollection child;
-            for (int i = 0; i < filterItems.Count; i++)
+            for (int i = 0; i < FilterItems.Count; i++)
             {
-                SearchItem item = filterItems[i];
+                SearchItem item = FilterItems[i];
                 if (item.SqlPrefixType == SqlPrefixType.EndByGroup)  continue;
                 currtn = item.ToLinkFilter(o);
 
@@ -218,12 +204,15 @@ namespace RS.Core.Filter
         /// <returns></returns>
         public ListFilter Copy()
         {
-            ListFilter filter = new ListFilter();
-            filter.FilterItems = this.FilterItems;
-            filter.NormalItems = this.NormalItems;
-            filter.PendingItems = this.PendingItems;
-            filter.ShortcutItems = this.ShortcutItems;
-            filter.SelfDefineSqlFilter = this.SelfDefineSqlFilter;
+            ListFilter filter = new ListFilter
+            {
+                FilterItems = this.FilterItems,
+                NormalItems = this.NormalItems,
+                PendingItems = this.PendingItems,
+                ShortcutItems = this.ShortcutItems,
+                SelfDefineSqlFilter = this.SelfDefineSqlFilter
+            };
+     
             return filter;
         }
 

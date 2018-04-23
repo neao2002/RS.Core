@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Data;
 using RS.Core.Filter;
+using RS.Core.Data;
 
 namespace RS.Core
 {
@@ -116,7 +117,7 @@ namespace RS.Core
         /// <param name="Method">赋值的方法</param>
         /// <param name="strQuery">查询语句</param>        
         /// <returns>指定类型的集合</returns>
-        TList GetEntityList<TList, TValue>(Func<IDataReader,TValue> Method, string strQuery) where TList : List<TValue>, new();
+        TList GetEntityList<TList, TValue>(Func<DbDataReader,TValue> Method, string strQuery) where TList : List<TValue>, new();
         /// <summary>
         /// 将数据表中记录转换为具有键值的实例对象集合（由委托定义实例）
         /// </summary>
@@ -125,7 +126,7 @@ namespace RS.Core
         /// <param name="Method">将DbDataReader记录转成实例对象的委托</param>
         /// <param name="strQuery">查询语句</param>        
         /// <returns>指定类型的集合</returns>
-        TDictionary GetEntityDictionary<TDictionary, TKey, TValue>(string KeyField, Func<IDataReader, TValue> Method, string strQuery) where TDictionary : Dictionary<TKey, TValue>, new();
+        TDictionary GetEntityDictionary<TDictionary, TKey, TValue>(string KeyField, Func<DbDataReader, TValue> Method, string strQuery) where TDictionary : Dictionary<TKey, TValue>, new();
         /// <summary>
         /// 将数据表中记录转换为具有键值的实例对象集合（由委托定义实例）
         /// </summary>
@@ -134,7 +135,7 @@ namespace RS.Core
         /// <param name="Method">将DbDataReader记录转成实例对象的委托</param>
         /// <param name="strQuery">查询语句</param>        
         /// <returns>指定类型的集合</returns>
-        TDictionary GetEntityDictionary<TDictionary, TKey, TValue>(string KeyField, TKey KeyFieldDefaultValue, Func<IDataReader, TValue> Method, string strQuery) where TDictionary : Dictionary<TKey, TValue>, new();
+        TDictionary GetEntityDictionary<TDictionary, TKey, TValue>(string KeyField, TKey KeyFieldDefaultValue, Func<DbDataReader, TValue> Method, string strQuery) where TDictionary : Dictionary<TKey, TValue>, new();
         /// <summary>
         ///  将数据表中记录转换实例对象集合（由委托定义实例）
         /// </summary>
@@ -144,7 +145,7 @@ namespace RS.Core
         /// <param name="cmdText">命令脚本</param>
         /// <param name="cmdParms">命令参数</param>
         /// <returns>指定类型的集合</returns>
-        TList GetEntityList<TList, TValue>(Func<IDataReader, TValue> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms) where TList : List<TValue>, new();
+        TList GetEntityList<TList, TValue>(Func<DbDataReader, TValue> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms) where TList : List<TValue>, new();
         /// <summary>
         /// 将数据表中记录转换为具有键值的实例对象集合（由委托定义实例）
         /// </summary>
@@ -156,7 +157,7 @@ namespace RS.Core
         /// <param name="cmdText">命令脚本</param>
         /// <param name="cmdParms">命令参数</param>
         /// <returns>指定类型的集合</returns>
-        TDictionary GetEntityDictionary<TDictionary, TKey, TValue>(string KeyField, Func<IDataReader, TValue> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms) where TDictionary : Dictionary<TKey, TValue>, new();
+        TDictionary GetEntityDictionary<TDictionary, TKey, TValue>(string KeyField, Func<DbDataReader, TValue> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms) where TDictionary : Dictionary<TKey, TValue>, new();
         /// <summary>
         /// 将数据表中记录转换为具有键值的实例对象集合（由委托定义实例）
         /// </summary>
@@ -168,12 +169,12 @@ namespace RS.Core
         /// <param name="cmdText">命令脚本</param>
         /// <param name="cmdParms">命令参数</param>
         /// <returns>指定类型的集合</returns>
-        TDictionary GetEntityDictionary<TDictionary, TKey, TValue>(string KeyField, TKey KeyFieldDefaultValue, Func<IDataReader, TValue> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms) where TDictionary : Dictionary<TKey, TValue>, new();
+        TDictionary GetEntityDictionary<TDictionary, TKey, TValue>(string KeyField, TKey KeyFieldDefaultValue, Func<DbDataReader, TValue> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms) where TDictionary : Dictionary<TKey, TValue>, new();
 
         #endregion
 
         #region 分页呈现列表
-        List<T> GetEntityListByPage<T>(Func<IDataReader, T> Method, string cmdText, PageInfo page, List<OrderItem> orders);
+        List<T> GetEntityListByPage<T>(Func<DbDataReader, T> Method, string cmdText, PageInfo page, List<OrderItem> orders);
         #endregion
 
 
@@ -187,7 +188,7 @@ namespace RS.Core
         /// <param name="Method">将DbDataReader记录转成实例对象的委托</param>
         /// <param name="strQuery">查询语句</param>        
         /// <returns>指定类型的集合</returns>
-        List<T> GetEntityList<T>(Func<IDataReader, T> Method, string strQuery);
+        List<T> GetEntityList<T>(Func<DbDataReader, T> Method, string strQuery);
         /// <summary>
         /// 将数据表中记录转换实例对象集合（由委托定义实例）
         /// </summary>
@@ -196,7 +197,7 @@ namespace RS.Core
         /// <param name="Method">将DbDataReader记录转成实例对象的委托</param>
         /// <param name="strQuery">查询语句</param>        
         /// <returns>指定类型的集合</returns>
-        Dictionary<TKey, TValue> GetEntityDictionary<TKey, TValue>(string KeyField, Func<IDataReader, TValue> Method, string strQuery);        
+        Dictionary<TKey, TValue> GetEntityDictionary<TKey, TValue>(string KeyField, Func<DbDataReader, TValue> Method, string strQuery);        
         /// <summary>
         /// 将数据表中记录转换实例对象集合（由委托定义实例）
         /// </summary>
@@ -205,7 +206,7 @@ namespace RS.Core
         /// <param name="Method">将DbDataReader记录转成实例对象的委托</param>
         /// <param name="strQuery">查询语句</param>        
         /// <returns>指定类型的集合</returns>
-        Dictionary<TKey, TValue> GetEntityDictionary<TKey, TValue>(string KeyField, TKey KeyFieldDefaultValue, Func<IDataReader, TValue> Method, string strQuery);
+        Dictionary<TKey, TValue> GetEntityDictionary<TKey, TValue>(string KeyField, TKey KeyFieldDefaultValue, Func<DbDataReader, TValue> Method, string strQuery);
         /// <summary>
         ///  将数据表中记录转换实例对象集合（由委托定义实例）
         /// </summary>
@@ -215,7 +216,7 @@ namespace RS.Core
         /// <param name="cmdText">命令脚本</param>
         /// <param name="cmdParms">命令参数</param>
         /// <returns>指定类型的集合</returns>
-        List<T> GetEntityList<T>(Func<IDataReader, T> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms);
+        List<T> GetEntityList<T>(Func<DbDataReader, T> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms);
         /// <summary>
         /// 将数据表中记录转换实例对象集合（由委托定义实例）
         /// </summary>
@@ -226,7 +227,7 @@ namespace RS.Core
         /// <param name="cmdText">命令脚本</param>
         /// <param name="cmdParms">命令参数</param>
         /// <returns>指定类型的集合</returns>
-        Dictionary<TKey, TValue> GetEntityDictionary<TKey, TValue>(string KeyField, Func<IDataReader, TValue> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms);        
+        Dictionary<TKey, TValue> GetEntityDictionary<TKey, TValue>(string KeyField, Func<DbDataReader, TValue> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms);        
         /// <summary>
         /// 将数据表中记录转换实例对象集合（由委托定义实例）
         /// </summary>
@@ -237,7 +238,7 @@ namespace RS.Core
         /// <param name="cmdText">命令脚本</param>
         /// <param name="cmdParms">命令参数</param>
         /// <returns>指定类型的集合</returns>
-        Dictionary<TKey, TValue> GetEntityDictionary<TKey, TValue>(string KeyField, TKey KeyFieldDefaultValue, Func<IDataReader, TValue> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms);
+        Dictionary<TKey, TValue> GetEntityDictionary<TKey, TValue>(string KeyField, TKey KeyFieldDefaultValue, Func<DbDataReader, TValue> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms);
 
         #endregion
 
@@ -249,7 +250,7 @@ namespace RS.Core
         /// <param name="Method">将DbDataReader记录转成实例对象的委托</param>
         /// <param name="strQuery">查询语句</param>        
         /// <returns>指定类型的实例</returns>
-        T GetEntity<T>(Func<IDataReader, T> Method, string strQuery);
+        T GetEntity<T>(Func<DbDataReader, T> Method, string strQuery);
 
         /// <summary>
         ///  获取DataReader的相关方法,获取第一行数据,这里仅提供一个委托
@@ -260,7 +261,7 @@ namespace RS.Core
         /// <param name="cmdText">命令脚本</param>
         /// <param name="cmdParms">命令参数</param>
         /// <returns>指定类型的实例</returns>
-        T GetEntity<T>(Func<IDataReader, T> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms);
+        T GetEntity<T>(Func<DbDataReader, T> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms);
         #endregion
 
         #region 获取DynamicObj动态对象集合
@@ -576,12 +577,7 @@ namespace RS.Core
 
         #region 读取一条或多条记录相关方法
 
-        /// <summary>
-        /// 在事务内执行指定方法
-        /// </summary>
-        /// <param name="Method"></param>
-        /// <returns></returns>
-        JsonReturn RunTransaction(Action Method);
+
 
         /// <summary>
         /// 读取一条记录,读取成功，返回true,否则为false
@@ -617,6 +613,182 @@ namespace RS.Core
         /// <param name="cmdParms"></param>
         /// <returns></returns>
         bool ReadMutil(Action<DbDataReader> Method, CommandType cmdType, string cmdText, params DbParameter[] cmdParms);
+        #endregion
+
+
+        #region 事务相关方法
+        /// <summary>
+        /// 在事务内执行指定方法
+        /// </summary>
+        /// <param name="Method"></param>
+        /// <returns></returns>
+        JsonReturn RunTransaction(Action Method);
+        JsonReturn RunTransaction(Func<JsonReturn> Method);
+
+        #endregion
+
+
+        #region 泛对象编辑相关方法，即对于相关object对象
+
+        #region 新增单个实例对象
+        /// <summary>
+        /// 将指定的对象作为一条记录保存到指定数据表中:新增
+        /// 注：
+        /// 1、对象至少要有一个可写属性
+        /// 2、属性的名称默认为数据表对应字段名
+        /// 3、如果保存的为对象集，则请使用SaveObjectList方法
+        /// 4、对象各属性值必须事先要设置好
+        /// </summary>
+        /// <param name="entity">要保存的对象实例</param>
+        /// <param name="TableName">对应要保存的数据表</param>
+        /// <param name="KeyPropertyNames">该对像主键属性，至少要设置一个字键属性，且该属性为对象属性</param>
+        /// <returns></returns>
+        bool SaveNewObject(object entity, string TableName);
+        /// <summary>
+        /// 将指定的对象作为一条记录保存到指定数据表中:新增
+        /// 注：
+        /// 1、对象至少要有一个可写属性
+        /// 2、属性的名称默认为数据表对应字段名
+        /// 3、如果保存的为对象集，则请使用SaveObjectList方法
+        /// 4、对象各属性值必须事先要设置好
+        /// </summary>
+        /// <param name="entity">要保存的对象实例</param>
+        /// <param name="TableName">对应要保存的数据表</param>
+        /// <param name="Prop2FieldMap">属性名与字段名映射关联，主要是针对个性的属性</param>
+        /// <param name="KeyPropertyNames">该对像主键属性，至少要设置一个字键属性，且该属性为对象属性</param>
+        /// <returns></returns>
+        bool SaveNewObject(object entity, string TableName, Dictionary<string, string> Prop2FieldMap);
+        #endregion
+
+        #region 批量保存多个实例对象(可以是新增或修改，系统根据键值来原确认是新增还是修改)
+        /// <summary>
+        /// 批量新增保存对象集
+        /// </summary>
+        /// <param name="entitys">要保存的对象集</param>
+        /// <param name="type">对象类型</param>
+        /// <param name="TableName">保存记录表名</param>
+        /// <returns></returns>
+        bool SaveNewObjectList<T>(List<T> entitys, string TableName);
+        /// <summary>
+        /// 批量新增保存对象集
+        /// </summary>
+        /// <param name="entitys">要保存的对象集</param>
+        /// <param name="type">对象类型</param>
+        /// <param name="TableName">保存记录表名</param>
+        /// <param name="Prop2FieldMap">个性属性与字段映身关系</param>
+        /// <returns></returns>
+        bool SaveNewObjectList<T>(List<T> entitys, string TableName, Dictionary<string, string> Prop2FieldMap);
+
+
+        /// <summary>
+        /// 将指定的对象作为一条记录保存到指定数据表中:新增
+        /// 注：
+        /// 1、对象至少要有一个可写属性
+        /// 2、属性的名称默认为数据表对应字段名
+        /// 3、如果保存的为对象集，则请使用SaveObjectList方法
+        /// 4、对象各属性值必须事先要设置好
+        /// </summary>
+        /// <param name="entity">要保存的对象实例</param>
+        /// <param name="TableName">对应要保存的数据表</param>
+        /// <param name="KeyPropertyNames">该对像主键属性，至少要设置一个字键属性，且该属性为对象属性</param>
+        /// <returns></returns>
+        bool SaveObjectList<T>(List<T> entitys, string TableName, params string[] KeyPropertyNames);
+        /// <summary>
+        /// 将指定的对象作为一条记录保存到指定数据表中:新增
+        /// 注：
+        /// 1、对象至少要有一个可写属性
+        /// 2、属性的名称默认为数据表对应字段名
+        /// 3、如果保存的为对象集，则请使用SaveObjectList方法
+        /// 4、对象各属性值必须事先要设置好
+        /// </summary>
+        /// <param name="entity">要保存的对象实例</param>
+        /// <param name="TableName">对应要保存的数据表</param>
+        /// <param name="Prop2FieldMap">属性名与字段名映射关联，主要是针对个性的属性</param>
+        /// <param name="KeyPropertyNames">该对像主键属性，至少要设置一个字键属性，且该属性为对象属性</param>
+        /// <returns></returns>
+        bool SaveObjectList<T>(List<T> entitys, string TableName, Dictionary<string, string> Prop2FieldMap, params string[] KeyPropertyNames);
+        #endregion
+
+        #region 更新修改单个实例对象
+        /// <summary>
+        /// 将指定的对象作为一条记录保存到指定数据表中:新增
+        /// 注：
+        /// 1、对象至少要有一个可写属性
+        /// 2、属性的名称默认为数据表对应字段名
+        /// 3、如果保存的为对象集，则请使用SaveObjectList方法
+        /// 4、对象各属性值必须事先要设置好
+        /// </summary>
+        /// <param name="entity">要保存的对象实例</param>
+        /// <param name="TableName">对应要保存的数据表</param>
+        /// <param name="KeyPropertyNames">该对像主键属性，至少要设置一个字键属性，且该属性为对象属性</param>
+        /// <returns></returns>
+        bool SaveObject(object entity, string TableName, params string[] KeyPropertyNames);
+        /// <summary>
+        /// 将指定的对象作为一条记录保存到指定数据表中:新增
+        /// 注：
+        /// 1、对象至少要有一个可写属性
+        /// 2、属性的名称默认为数据表对应字段名
+        /// 3、如果保存的为对象集，则请使用SaveObjectList方法
+        /// 4、对象各属性值必须事先要设置好
+        /// </summary>
+        /// <param name="entity">要保存的对象实例</param>
+        /// <param name="TableName">对应要保存的数据表</param>
+        /// <param name="Prop2FieldMap">属性名与字段名映射关联，主要是针对个性的属性</param>
+        /// <param name="KeyPropertyNames">该对像主键属性，至少要设置一个字键属性，且该属性为对象属性</param>
+        /// <returns></returns>
+        bool SaveObject(object entity, string TableName, Dictionary<string, string> Prop2FieldMap, params string[] KeyPropertyNames);
+
+        bool UpdateObject(object entity, string TableName, string KeyPropertyName, params string[] UpdatePropertyNames);
+        bool UpdateObject(object entity, string TableName,string[] KeyPropertyNames,params string[] UpdatePropertyNames);
+        bool UpdateObject(object entity, string TableName, Dictionary<string, string> Prop2FieldMap, string[] KeyPropertyNames, string[] UpdatePropertyNames);
+
+
+        #endregion
+
+        #region 新增保存父子表，即主表和明细表
+        /// <summary>
+        /// 新增保存父子表，即主表和明细表
+        /// </summary>
+        /// <param name="MDMaps"></param>
+        /// <returns></returns>
+        bool SaveNewMasterAndDetail(MasterDetailMapInfo MDMaps);
+
+
+        #endregion
+
+        #region 修改保存父子表，即同时保存父子明细表
+        bool SaveMasterAndDetail(MasterDetailMapInfo MDMaps);
+
+
+        #endregion
+        #endregion
+
+        #region 泛对象读取相关方法
+
+        List<T> GetDetailRecords<T>(DetailMapInfo child, MasterDetailMapInfo master) where T : new();
+
+        /// <summary>
+        /// 根据指定主键字段值获对记录对象实例
+        /// </summary>
+        /// <typeparam name="T">返回的对象类型</typeparam>
+        /// <param name="TableName">数据表名</param>
+        /// <param name="KeyField">主键字段</param>
+        /// <param name="KeyFieldValue">主键字段值</param>
+        /// <returns></returns>
+        T GetObject<T>(string TableName, string KeyField, object KeyFieldValue) where T : new();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">返回的对象类型</typeparam>
+        /// <param name="TableName">数据表名</param>
+        /// <param name="KeyFieldValues">主键字段信息</param>
+        /// <returns></returns>
+        T GetObject<T>(string TableName, Dictionary<string, object> KeyFieldValues) where T : new();
+
+        List<T> GetObjectList<T>(string sql, Action<DbDataReader> OtherSetMethod = null) where T : new();
+        List<T> GetObjectList<T>(string sql, PageInfo page, List<OrderItem> orderbys, Action<DbDataReader> OtherSetMethod = null) where T : new();
+
         #endregion
     }
 }

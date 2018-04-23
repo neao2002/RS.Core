@@ -1,9 +1,10 @@
 ﻿using RS.Core.Data;
+using RS.Core.Filter;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core.Filter
+namespace RS.Core
 {
     /// <summary>
     /// 查询统一接口
@@ -22,25 +23,17 @@ namespace RS.Core.Filter
         /// 已设好的查询值
         /// </summary>
         List<SearchItem> SqlFieldItems { get;set;}
-        void RemoveDefineItem(SearchItem items);
-        void RemoveDefineItem(string FieldName);
+        IFilter RemoveDefineItem(SearchItem items);
+        IFilter RemoveDefineItem(string FieldName);
         /// <summary>
         /// 追加自定义的查询项(多项)
         /// </summary>
-        void AppendDefineItems(List<SearchItem> items);
+        IFilter AppendDefineItems(List<SearchItem> items);
 
         /// <summary>
         /// 追加自定义的查询项(单项)
         /// </summary>
-        void AppendDefineItems(SearchItem item);
-        /// <summary>
-        /// 追加自定义的查询项(单项)
-        /// </summary>
-        /// <param name="Field">字段</param>
-        /// <param name="dataType">字段类型</param>
-        /// <param name="compareType">过滤类型</param>
-        /// <param name="value">值</param>
-        void AppendDefineItems(string Field, FilterDataType dataType, CompareType compareType, object value);
+        IFilter AppendDefineItems(SearchItem item);
         /// <summary>
         /// 追加自定义的查询项(单项)
         /// </summary>
@@ -48,16 +41,34 @@ namespace RS.Core.Filter
         /// <param name="dataType">字段类型</param>
         /// <param name="compareType">过滤类型</param>
         /// <param name="value">值</param>
-        void AppendDefineItems(string Field, FilterDataType dataType, CompareType compareType, object beginvalue,object endvalue);
+        IFilter AppendDefineItems(string Field, FilterDataType dataType, CompareType compareType, object value);
+        /// <summary>
+        /// 追加自定义的查询项(单项)
+        /// </summary>
+        /// <param name="Field">字段</param>
+        /// <param name="dataType">字段类型</param>
+        /// <param name="compareType">过滤类型</param>
+        /// <param name="value">值</param>
+        IFilter AppendDefineItems(string Field, FilterDataType dataType, CompareType compareType, object beginvalue,object endvalue);
 
 
-        void AppendDefineItems(string Field,SqlPrefixType prefixType, FilterDataType dataType, CompareType compareType, object value);
-        void AppendDefineItems(string Field, SqlPrefixType prefixType, FilterDataType dataType, CompareType compareType, object beginvalue, object endvalue);
+        IFilter AppendDefineItems(string Field,SqlPrefixType prefixType, FilterDataType dataType, CompareType compareType, object value);
+        IFilter AppendDefineItems(string Field, SqlPrefixType prefixType, FilterDataType dataType, CompareType compareType, object beginvalue, object endvalue);
+
+        /// <summary>
+        /// 添加一个SQL过虑条件项
+        /// </summary>
+        /// <param name="SqlFilterItem"></param>
+        /// <returns></returns>
+        IFilter AppendSqlFilter(string SqlFilterItem);
+
+
+
         /// <summary>
         /// 当前检索项条件添加到指定过滤项中
         /// </summary>
         /// <param name="filter"></param>
-        void CopySearchItemsTo(IFilter filter);
+        IFilter CopySearchItemsTo(IFilter filter);
         
         /// <summary>
         /// 自定义过滤条件

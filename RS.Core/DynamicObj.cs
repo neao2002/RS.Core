@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -100,6 +101,7 @@ namespace RS.Core
     {
         public DynamicObj() : base()
         { }
+       
         public DynamicObj(IDictionary<string, object> dictionary)
             : base(dictionary)
         {
@@ -122,9 +124,10 @@ namespace RS.Core
             return this[key];
         }
 
-        public void Set(string key, object value)
+        public DynamicObj Set(string key, object value)
         {
             this[key] = value;
+            return this;
         }
 
         public T Get<T>(string key)
@@ -156,6 +159,17 @@ namespace RS.Core
         public static DynamicObj ToDynamic(Dictionary<string,object> items)
         {
             return new DynamicObj(items);
+        }
+
+        /// <summary>
+        /// 创建一个空
+        /// </summary>
+        /// <returns></returns>
+        public static DynamicObj NewObj(string Key,object Value)
+        {
+            DynamicObj obj = new DynamicObj();
+            obj.Set(Key, Value);
+            return obj;
         }
     }
 }

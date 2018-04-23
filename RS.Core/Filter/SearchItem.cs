@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Collections;
-using RS.Lib.Data;
-
 namespace RS.Core.Filter
 {
     public class SearchItem
@@ -16,7 +14,7 @@ namespace RS.Core.Filter
         private CompareType compareType;//数据比较类型
         private object value1;//比较的第一个值
         private object value2;//比较的第二个值:只有当为之间比较时该值才有较
-        protected DelegateOfGetDataSource getDataSource;
+        protected Func<List<DynamicObj>> getDataSource;
         private string itemID;
         private Guid defineQuery;
         private SqlPrefixType sqlPrefixType;       
@@ -32,7 +30,7 @@ namespace RS.Core.Filter
         /// 默认构造函数：创建检索项实例
         /// </summary>
         public SearchItem()
-        {
+        {   
             name = string.Empty;
             defineQuery = Guid.Empty;
             fieldname = string.Empty;
@@ -57,7 +55,7 @@ namespace RS.Core.Filter
         /// <param name="datatype">检索的数据类型</param>
         /// <param name="_getDataSource">获取检索项数据来源的委托</param>
         /// <param name="_setControl">进行控件定义的委托</param>
-        public SearchItem(string field,string title, FilterDataType datatype,DelegateOfGetDataSource _getDataSource)
+        public SearchItem(string field,string title, FilterDataType datatype,Func<List<DynamicObj>> _getDataSource)
         {
             defineQuery = Guid.Empty;
             name = title;
@@ -89,11 +87,6 @@ namespace RS.Core.Filter
             dateCompareType = DateCompareType.Normal;
         }
 
-        public SearchItem(string field, string title, FilterDataType datatype, DelegateOfGetDataSource _getDataSource, DelegateOfSetControlForQuery _setControl,Guid QueryID)
-          :this(field,title,datatype,_getDataSource)
-        {
-            defineQuery = QueryID;
-        }
         #endregion
         #region 为创建检索过滤条件而自定义创建的检索值的构造函数
         /// <summary>
@@ -172,12 +165,12 @@ namespace RS.Core.Filter
         /// <param name="datatype">检索的数据类型</param>
         /// <param name="_getDataSource">获取检索项数据来源的委托</param>
         /// <param name="_setControl">进行控件定义的委托</param>
-        public SearchItem(string title, FilterDataType datatype, DelegateOfGetDataSource _getDataSource,params SearchFieldInfo[] Fields):this(title,datatype,Fields)
+        public SearchItem(string title, FilterDataType datatype, Func<List<DynamicObj>> _getDataSource,params SearchFieldInfo[] Fields):this(title,datatype,Fields)
         {   
             getDataSource = _getDataSource;            
         }
 
-        public SearchItem(string title, FilterDataType datatype, DelegateOfGetDataSource _getDataSource, Guid QueryID,params SearchFieldInfo[] Fields)
+        public SearchItem(string title, FilterDataType datatype, Func<List<DynamicObj>> _getDataSource, Guid QueryID,params SearchFieldInfo[] Fields)
             : this( title, datatype, _getDataSource,Fields)
         {
             defineQuery = QueryID;
@@ -404,7 +397,7 @@ namespace RS.Core.Filter
         /// 获取参考数据源
         /// </summary>
         /// <returns></returns>
-        public DataTable GetDataSource()
+        public List<DynamicObj> GetDataSource()
         {
             if (getDataSource != null)
                 return getDataSource();
@@ -438,7 +431,7 @@ namespace RS.Core.Filter
         /// 将当前过滤条件项转换为指定SQL过滤条件字符
         /// </summary>
         /// <returns></returns>
-        public string ToSqlFilter(DbUtils DB)
+        public string ToSqlFilter(IDbDriver DB)
         {
             if (SqlPrefixType==SqlPrefixType.EndByGroup) return string.Empty;
 
@@ -486,6 +479,11 @@ namespace RS.Core.Filter
                    SqlFilter += filter;
                }
             }
+
+            if (SqlFilter.IsWhiteSpace()) //为保证数据安全,如果检索设置无效，则产生一无法检测数据的过滤条件
+                SqlFilter = "1=2";
+
+
             return SqlFilter;
         }
         /// <summary>
@@ -494,16 +492,13 @@ namespace RS.Core.Filter
         /// <param name="item"></param>
         /// <param name="FieldName"></param>
         /// <returns></returns>
-        private string GetItemFitler(string FN,DbUtils Db)
+        private string GetItemFitler(string FN,IDbDriver Db)
         {
             string filter = string.Empty;
 
             if (string.IsNullOrEmpty(FN))
-                return filter;
-            else if (Value1 == null)//没有值，表示条件无效
-            {
-                return filter;
-            }
+                throw new Exception("未设置检索字段");
+            
             if (DataType.IsIn<FilterDataType>(FilterDataType.Guid, FilterDataType.OpenWinGuid) && Value1.ToStringValue().IsWhiteSpace())
                 Value1 = DBNull.Value;
 
@@ -521,7 +516,7 @@ namespace RS.Core.Filter
                 }
             }
 
-            if (Value1 == DBNull.Value)  //当检索值为空值时（1、未设置该检索项；2、该检索项确实为空值）
+            if (Value1 == DBNull.Value || Value1 == null)  //当检索值为空值时（1、未设置该检索项；2、该检索项确实为空值）
             {
                 if (ValueField.IsWhiteSpace()) //非值表达式
                 {
@@ -539,15 +534,21 @@ namespace RS.Core.Filter
                             else
                                 filter = Db.Function.NotIsNullSqlExp(FN);
                             break;
+                        default:
+                            if (DataType == FilterDataType.String || DataType == FilterDataType.OpenWinString || DataType == FilterDataType.XPath) //or
+                                filter = string.Format("({0}{2}{1})", Db.Function.IsNullSqlExp(FN), Db.Function.EqualsSqlExp(FN, "''"), Db.Function.OrSqlExp());
+                            else
+                                filter = Db.Function.IsNullSqlExp(FN);
+                            break;
                     }
                     return filter;
                 }
                 else  //有值表达式
                 {
-                    if (Value2==DBNull.Value && Value2Field.IsNotWhiteSpace() && CompareType==CompareType.Between 
-                        && DataType.IsIn<FilterDataType>(FilterDataType.DateTime,FilterDataType.Int,FilterDataType.Numeric))
+                    if (Value2 == DBNull.Value && Value2Field.IsNotWhiteSpace() && CompareType == CompareType.Between
+                        && DataType.IsIn<FilterDataType>(FilterDataType.DateTime, FilterDataType.Int, FilterDataType.Numeric))
                     {
-                        filter=Db.Function.BetweenSqlExp(FN,ValueField,Value2Field);
+                        filter = Db.Function.BetweenSqlExp(FN, ValueField, Value2Field);
                     }
                     else
                     {
@@ -570,23 +571,26 @@ namespace RS.Core.Filter
                                 break;
                             case CompareType.LessThen:
                                 filter = Db.Function.LessThenSqlExp(FN, ValueField);
-                                break;                        
+                                break;
+                            default:
+                                filter = Db.Function.EqualsSqlExp(FN, ValueField);
+                                break;
                         }
                     }
-                    return filter;                    
+                    return filter;
                 }
             }
             else if (Value2 == DBNull.Value && CompareType == CompareType.Between) //在之间，但未设第二个值，则视为无效
-                return filter;
+                CompareType = CompareType.BigOrEqual;
 
             if (Value1 is IList) //值为列表时，即多个值
             {
-                if (CompareType == CompareType.Between) //这种情况对于between是无效的
-                    return filter;
-                else
-                {
+                if (CompareType == CompareType.Between) //这种情况对于between是无效的,则视为Equal
+                    CompareType = CompareType.Equal;
+
+                
                     List<string> lists = new List<string>();
-                    if (DataType != FilterDataType.DateTime && (CompareType == CompareType.Equal ||  CompareType ==CompareType.NoEqual))
+                    if (DataType != FilterDataType.DateTime && (CompareType == CompareType.Equal || CompareType == CompareType.NoEqual))
                     {
                         IEnumerable vs = Value1 as IEnumerable;
                         foreach (object v in vs)
@@ -598,14 +602,14 @@ namespace RS.Core.Filter
                                 else if (DataType == FilterDataType.String || DataType == FilterDataType.OpenWinString || DataType == FilterDataType.XPath)
                                     lists.Add(string.Format("'{0}'", v.SqlEncode()));
                                 else
-                                    lists.Add(string.Format("{0}", v));                                 
+                                    lists.Add(string.Format("{0}", v));
                             }
                         }
-                        if (lists.Count == 0) //没有任何数据项
-                            return filter;
+                        if (lists.Count == 0) //没有任何数据项,则视为无效条件，不影响任何数据
+                            return "1=2";
                         else
                         {
-                            if (CompareType==CompareType.Equal)
+                            if (CompareType == CompareType.Equal)
                                 filter = Db.Function.InSqlExp(FN, string.Join(",", lists.ToArray()));
                             else
                                 filter = Db.Function.NotInSqlExp(FN, string.Join(",", lists.ToArray()));
@@ -617,19 +621,18 @@ namespace RS.Core.Filter
                         IEnumerable vs = Value1 as IEnumerable;
                         foreach (object v in vs)
                         {
-                            string list =GetFilter(FN, v, Db);
+                            string list = GetFilter(FN, v, Db);
                             if (list.IsNotWhiteSpace())
                                 lists.Add(list);
                         }
                         if (lists.Count == 0)
-                            return filter;
+                            return "1=2";
                         else
                         {
                             filter = string.Format("({0})", string.Join(" or ", lists.ToArray()));
                             return filter;
                         }
                     }
-                }
             }
             else
             {
@@ -645,7 +648,7 @@ namespace RS.Core.Filter
         /// <param name="V1"></param>
         /// <param name="Db"></param>
         /// <returns></returns>
-        private string GetDateFilter(string FN, object V1, DbUtils Db)
+        private string GetDateFilter(string FN, object V1, IDbDriver Db)
         {
             DateTime dtStart,dtEnd;
             if (this.DataType == FilterDataType.String||(this.DataType.IsIn(FilterDataType.Int,FilterDataType.Numeric)&&this.DateCompareType== DateCompareType.Year))
@@ -1036,7 +1039,7 @@ namespace RS.Core.Filter
             return filter.IsNotWhiteSpace()?string.Format("({0})",filter):filter;
         }
 
-        private string GetFilter(string FN, object V1, DbUtils Db)
+        private string GetFilter(string FN, object V1, IDbDriver Db)
         {
             SearchItem item=this;
             string filter = string.Empty;

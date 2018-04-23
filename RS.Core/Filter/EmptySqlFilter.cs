@@ -33,24 +33,26 @@ namespace RS.Core.Filter
             return item;
         }
 
-        public void RemoveDefineItem(SearchItem item) {
+        public IFilter RemoveDefineItem(SearchItem item) {
             AppendItems.Remove(item);
+            return this;
         }
 
-        public void RemoveDefineItem(string FieldName)
+        public IFilter RemoveDefineItem(string FieldName)
         {
             SearchItem item = Find(FieldName);
             if (item!=null)
             {
                 AppendItems.Remove(item);
             }
+            return this;
         }
 
         #region IFilter 成员
 
-        public void CopySearchItemsTo(IFilter filter)
+        public IFilter CopySearchItemsTo(IFilter filter)
         {
-            if (filter == this) return;
+            if (filter == this) return this;
             filter.AppendDefineItems(SqlFieldItems);
             filter.AppendDefineItems(AppendItems);
             if (SelfDefineSqlFilter.IsNotWhiteSpace())
@@ -60,15 +62,30 @@ namespace RS.Core.Filter
                 else
                     filter.SelfDefineSqlFilter = string.Format("({0}) and ({1})", SelfDefineSqlFilter, filter.SelfDefineSqlFilter);
             }
+            return this;
         }
-        public void AppendDefineItems(System.Collections.Generic.List<SearchItem> items)
+        public IFilter AppendDefineItems(System.Collections.Generic.List<SearchItem> items)
         {
             AppendItems.AddRange(items);
+            return this;
         }
-        public void AppendDefineItems(SearchItem item)
+        public IFilter AppendDefineItems(SearchItem item)
         {
             AppendItems.Add(item);
+            return this;
         }
+
+        /// <summary>
+        /// 添加一个SQL过虑条件项
+        /// </summary>
+        /// <param name="SqlFilterItem"></param>
+        /// <returns></returns>
+        public IFilter AppendSqlFilter(string SqlFilterItem)
+        {
+            if (SqlFilterItem.IsNotWhiteSpace()) CustomSqlFilters.Add(SqlFilterItem);
+            return this;
+        }
+
         public ListFilter ListFilter
         {
             get
@@ -77,6 +94,7 @@ namespace RS.Core.Filter
                 filter.FilterItems.AddRange(sqlFiledItems);
                 filter.FilterItems.AddRange(AppendItems);
                 filter.SelfDefineSqlFilter = selfDefineSqlFilter;
+                filter.CustomSqlFilters = CustomSqlFilters;
                 return filter;
             }
             set
@@ -116,35 +134,39 @@ namespace RS.Core.Filter
 
         #endregion
         #region IFilter 成员
-        public void AppendDefineItems(string Field, FilterDataType dataType, CompareType compareType, object value)
+        public IFilter AppendDefineItems(string Field, FilterDataType dataType, CompareType compareType, object value)
         {
             SearchItem item = new SearchItem(Field, dataType, value);
             item.CompareType = compareType;
             AppendItems.Add(item);
+            return this;
         }
 
-        public void AppendDefineItems(string Field, FilterDataType dataType, CompareType compareType, object beginvalue, object endvalue)
+        public IFilter AppendDefineItems(string Field, FilterDataType dataType, CompareType compareType, object beginvalue, object endvalue)
         {
             SearchItem item = new SearchItem(Field, dataType, beginvalue);
             item.Value2 = endvalue;
             item.CompareType = compareType;
             AppendItems.Add(item);
+            return this;
         }
 
-        public void AppendDefineItems(string Field, SqlPrefixType prefixType, FilterDataType dataType, CompareType compareType, object value)
+        public IFilter AppendDefineItems(string Field, SqlPrefixType prefixType, FilterDataType dataType, CompareType compareType, object value)
         {
             SearchItem item = new SearchItem(Field, dataType, value);
             item.SqlPrefixType = prefixType;
             item.CompareType = compareType;
             AppendItems.Add(item);
+            return this;
         }
-        public void AppendDefineItems(string Field, SqlPrefixType prefixType, FilterDataType dataType, CompareType compareType, object beginvalue, object endvalue)
+        public IFilter AppendDefineItems(string Field, SqlPrefixType prefixType, FilterDataType dataType, CompareType compareType, object beginvalue, object endvalue)
         {
             SearchItem item = new SearchItem(Field, dataType, beginvalue);
             item.SqlPrefixType = prefixType;
             item.Value2 = endvalue;
             item.CompareType = compareType;
             AppendItems.Add(item);
+            return this;
         }
 
 
@@ -170,12 +192,16 @@ namespace RS.Core.Filter
         }
         public string ToSqlFilter(string prefix)
         {
-            return RSHelper.GetFilter(this, prefix);
+            return FilterHelper.GetFilter(this, prefix);
         }
 
         public string ToSqlFilter(IDbDriver Db, string prefix)
         {
-            return RSHelper.GetFilter(this, Db, prefix);
+            return FilterHelper.GetFilter(this, Db, prefix);
         }
+
+
+        internal List<string> CustomSqlFilters { get; set; } = new List<string>();//自定义查询条件，即通过各项直接构成SQL中where查询项，并以and链接而成，如果其中有项为空，则会出异常，类似于“and and”
+
     }
 }

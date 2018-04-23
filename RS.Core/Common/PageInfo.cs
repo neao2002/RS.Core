@@ -6,24 +6,18 @@ namespace RS.Core
     /// </summary>
     public class PageInfo
     {
-        private PageInfo()
-        {
-            PageIndex = 0;
-            PageSize = 0;
-            Totals=0;
-        }
         /// <summary>
         /// 当前页的索引，从0开始
         /// </summary>
-        public int PageIndex { get; set; }
+        public int PageIndex { get; set; } = 0;
         /// <summary>
         /// 分页的大小
         /// </summary>
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = 0;
         /// <summary>
         /// 未分页时的总记录数
         /// </summary>
-        public long Totals { get; set; }
+        public long Totals { get; set; } = 0;
 
         //以下为汇总相关，用于创建合计相关数据
         public DList<string,TotalType> StatInfos

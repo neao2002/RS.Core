@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace RS.Lib.Utils
+namespace RS.Core.Utils
 {
     public static class PathUtils
     {
@@ -65,17 +65,21 @@ namespace RS.Lib.Utils
         /// <returns></returns>
         public static UploadPathInfo CreateUploadPath(string MainDirName, UploadPathType PathType, string UploadRootPath, string WebVirthPath)
         {
+            //TODO:物理路径
             string SiteUrl = "";
-            HttpContext page = HttpContext.Current;
+            
+            //HttpContext page = HttpContext.Current;
 
-            if (page != null)
-            {
-                try
-                {
-                    SiteUrl = page.Server.MapPath("~/");
-                }
-                catch { }
-            }
+            //if (page != null)
+            //{
+            //    try
+            //    {
+            //        SiteUrl = page.Server.MapPath("~/");
+            //    }
+            //    catch { }
+            //}
+
+
 
             MainDirName = RemovePathString(MainDirName);
 
@@ -91,7 +95,8 @@ namespace RS.Lib.Utils
                 path = MainDirName;
 
 
-
+            System.IO.Directory.GetCurrentDirectory();
+            
 
             string m_RelatPath, m_UploadPath;//物理路径和虚拟路径
 

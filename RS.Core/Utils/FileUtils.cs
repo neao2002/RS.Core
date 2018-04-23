@@ -162,7 +162,7 @@ namespace RS.Core
         {
             try
             {
-                File.WriteAllBytes(FilePath, bytes);
+                File.WriteAllBytes(FilePath, bytes);                
             }
             catch (Exception e)
             {
