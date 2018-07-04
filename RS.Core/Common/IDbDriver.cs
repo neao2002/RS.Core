@@ -420,7 +420,6 @@ namespace RS.Core
         /// <param name="strQuery"></param>
         /// <returns></returns>
         object GetScalar(string strQuery);
-
         /// <summary>
         /// 使用已有连接串执行一个返回值的sql语句   有参SQL
         /// </summary>
@@ -429,6 +428,9 @@ namespace RS.Core
         /// <param name="cmdParms">参数</param>
         /// <returns>返回值</returns>
         object GetScalar(CommandType cmdType, string cmdText, params DbParameter[] cmdParms);
+
+        T GetField<T>(string strQuery);
+        T GetField<T>(CommandType cmdType, string cmdText, params DbParameter[] cmdParms);
 
         /// <summary>
         /// 获取指定SQL返回的行值，取第一行

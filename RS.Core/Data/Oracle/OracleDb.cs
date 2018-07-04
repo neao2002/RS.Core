@@ -1168,6 +1168,15 @@ select * from (
             return val;
         }
 
+        public T GetField<T>(string strQuery)
+        {
+            return GetScalar(strQuery).GetValue<T>();
+        }
+        public T GetField<T>(CommandType cmdType, string cmdText, params DbParameter[] cmdParms)
+        {
+            return GetScalar(cmdType, cmdText, cmdParms).GetValue<T>();
+        }
+
         /// <summary>
         /// 获取指定SQL返回的行值，取第一行
         /// </summary>
@@ -2769,7 +2778,7 @@ select * from (
 
         public bool UpdateObject(object entity, string TableName, string KeyPropertyName, params string[] UpdatePropertyNames)
         {
-            return UpdateObject(entity, TableName, KeyPropertyName, UpdatePropertyNames);
+            return UpdateObject(entity, TableName, new string[] { KeyPropertyName }, UpdatePropertyNames);
         }
 
         public bool UpdateObject(object entity, string TableName, string[] KeyPropertyNames, params string[] UpdatePropertyNames)

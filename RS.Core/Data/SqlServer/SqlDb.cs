@@ -371,8 +371,10 @@ namespace RS.Core.Data
             DataTable ds = null;
             try
             {
-                SqlDataAdapter adapter = new SqlDataAdapter(string.Format("select * from {0} with(nolock) where 1=2",TableName), m_conn);
-                adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                SqlDataAdapter adapter = new SqlDataAdapter(string.Format("select * from {0} with(nolock) where 1=2", TableName), m_conn)
+                {
+                    MissingSchemaAction = MissingSchemaAction.AddWithKey
+                };
                 if (this.trans != null)
                     adapter.SelectCommand.Transaction = this.trans;
 
@@ -505,8 +507,10 @@ namespace RS.Core.Data
             Exception curError = null;
             try
             {
-                SqlCommand cmd = new SqlCommand(strQuery, m_conn);
-                cmd.CommandTimeout = 0;
+                SqlCommand cmd = new SqlCommand(strQuery, m_conn)
+                {
+                    CommandTimeout = 0
+                };
 
                 if (this.trans != null)
                     cmd.Transaction = this.trans;
@@ -562,8 +566,10 @@ namespace RS.Core.Data
             Exception curError = null;
             try
             {
-                SqlCommand cmd = new SqlCommand(strQuery, m_conn);
-                cmd.CommandTimeout = 0;
+                SqlCommand cmd = new SqlCommand(strQuery, m_conn)
+                {
+                    CommandTimeout = 0
+                };
 
                 if (this.trans != null)
                     cmd.Transaction = this.trans;
@@ -780,8 +786,10 @@ namespace RS.Core.Data
             T item = default(T);
             try
             {
-                SqlCommand cmd = new SqlCommand(strQuery, m_conn);
-                cmd.CommandTimeout = 0;
+                SqlCommand cmd = new SqlCommand(strQuery, m_conn)
+                {
+                    CommandTimeout = 0
+                };
 
                 if (this.trans != null)
                     cmd.Transaction = this.trans;
@@ -1218,8 +1226,10 @@ OPTION (MAXRECURSION 2000);", fromSQL,
             object val = null;
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandTimeout = 0;
+                SqlCommand cmd = new SqlCommand
+                {
+                    CommandTimeout = 0
+                };
                 PrepareCommand(cmd, cmdType, cmdText, cmdParms);
                 val = cmd.ExecuteScalar();
                 cmd.Parameters.Clear();
@@ -1237,6 +1247,17 @@ OPTION (MAXRECURSION 2000);", fromSQL,
             }
             return val;
         }
+
+        public T GetField<T>(string strQuery)
+        {
+            return GetScalar(strQuery).GetValue<T>();
+        }
+        public T GetField<T>(CommandType cmdType, string cmdText, params DbParameter[] cmdParms)
+        {
+            return GetScalar(cmdType, cmdText, cmdParms).GetValue<T>();
+        }
+
+
         public Dictionary<string, TValue> GetRowItemArray<TValue>(string strQuery)
         {
             CheckIsSafetySql(strQuery);
@@ -1247,8 +1268,10 @@ OPTION (MAXRECURSION 2000);", fromSQL,
             Dictionary<string, TValue> v = null;
             try
             {
-                SqlCommand cmd = new SqlCommand(strQuery, m_conn);
-                cmd.CommandTimeout = 0;
+                SqlCommand cmd = new SqlCommand(strQuery, m_conn)
+                {
+                    CommandTimeout = 0
+                };
 
                 if (this.trans != null)
                     cmd.Transaction = this.trans;
@@ -1285,8 +1308,10 @@ OPTION (MAXRECURSION 2000);", fromSQL,
             List<Dictionary<string, TValue>> items = new List<Dictionary<string, TValue>>();
             try
             {
-                SqlCommand cmd = new SqlCommand(strQuery, m_conn);
-                cmd.CommandTimeout = 0;
+                SqlCommand cmd = new SqlCommand(strQuery, m_conn)
+                {
+                    CommandTimeout = 0
+                };
 
                 if (this.trans != null)
                     cmd.Transaction = this.trans;
@@ -1330,8 +1355,11 @@ OPTION (MAXRECURSION 2000);", fromSQL,
             object[] v = null;
             try
             {
-                SqlCommand cmd = new SqlCommand(strQuery, m_conn);
-                cmd.CommandTimeout = 0;
+                SqlCommand sqlCommand = new SqlCommand(strQuery, m_conn)
+                {
+                    CommandTimeout = 0
+                };
+                SqlCommand cmd = sqlCommand;
 
                 if (this.trans != null)
                     cmd.Transaction = this.trans;
@@ -1429,8 +1457,10 @@ OPTION (MAXRECURSION 2000);", fromSQL,
             int val = 0;
             try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandTimeout = 0;
+                SqlCommand cmd = new SqlCommand()
+                {
+                    CommandTimeout = 0
+                };
                 PrepareCommand(cmd, cmdType, cmdText, cmdParms);
                 val = cmd.ExecuteNonQuery();
                 cmd.Parameters.Clear();
@@ -1659,15 +1689,17 @@ OPTION (MAXRECURSION 2000);", fromSQL,
             Exception curError = null;
             try
             {
-                SqlDataAdapter m_adapter = new SqlDataAdapter(string.Format("select * from {0} where 1<>1",Function.ConvertTable(TableName)), m_conn);
-                m_adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                SqlDataAdapter m_adapter = new SqlDataAdapter(string.Format("select * from {0} where 1<>1", Function.ConvertTable(TableName)), m_conn)
+                {
+                    MissingSchemaAction = MissingSchemaAction.AddWithKey
+                };
 
                 if (this.trans != null)
                     m_adapter.SelectCommand.Transaction = this.trans;
 
-             //   SqlCommandBuilder cb = new SqlCommandBuilder(m_adapter);
+               // SqlCommandBuilder cb = new SqlCommandBuilder(m_adapter);
 
-                m_adapter.RowUpdating += new SqlRowUpdatingEventHandler(m_adapter_RowUpdating);
+                m_adapter.RowUpdating += new SqlRowUpdatingEventHandler(M_adapter_RowUpdating);
 
 
                 DataTable updt = dt.GetChanges();
@@ -1686,7 +1718,6 @@ OPTION (MAXRECURSION 2000);", fromSQL,
                 Close();
                 if (curError != null) throw new Exception("SQL Failed" + curError.ToString());
             }
-
         }
 
         /// <summary>
@@ -1698,7 +1729,7 @@ OPTION (MAXRECURSION 2000);", fromSQL,
             UpdateDataTable(dt, dt.TableName);
         }
         
-        private void m_adapter_RowUpdating(object sender, SqlRowUpdatingEventArgs e)
+        private void M_adapter_RowUpdating(object sender, SqlRowUpdatingEventArgs e)
         {
             if (e.Status == UpdateStatus.ErrorsOccurred)
             {
@@ -1725,15 +1756,17 @@ OPTION (MAXRECURSION 2000);", fromSQL,
 
         private void UpdateDataSetTable(DataTable dt)
         {
-            SqlDataAdapter m_adapter = new SqlDataAdapter(string.Format("select * from {0} where 1<>1", Function.ConvertTable(dt.TableName)), m_conn);
-            m_adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+            SqlDataAdapter m_adapter = new SqlDataAdapter(string.Format("select * from {0} where 1<>1", Function.ConvertTable(dt.TableName)), m_conn)
+            {
+                MissingSchemaAction = MissingSchemaAction.AddWithKey
+            };
 
             if (this.trans != null)
                 m_adapter.SelectCommand.Transaction = this.trans;
 
           //  SqlCommandBuilder cb = new SqlCommandBuilder(m_adapter);
 
-            m_adapter.RowUpdating += new SqlRowUpdatingEventHandler(m_adapter_RowUpdating);
+            m_adapter.RowUpdating += new SqlRowUpdatingEventHandler(M_adapter_RowUpdating);
 
 
             DataTable updt = dt.GetChanges();
@@ -1827,7 +1860,7 @@ OPTION (MAXRECURSION 2000);", fromSQL,
                     if (reader.Read())
                     {
                         hasRec = true;
-                        if (Method != null) Method(reader);
+                        Method?.Invoke(reader);
                     }
                 }
             }
@@ -1877,7 +1910,7 @@ OPTION (MAXRECURSION 2000);", fromSQL,
                     while (reader.Read())
                     {
                         hasRec = true;
-                        if (Method != null) Method(reader);
+                        Method?.Invoke(reader);
                     }
                 }
             }
@@ -2022,8 +2055,7 @@ select count(*) from ({1}) t1",withPerstr,sql);
             {
                 try
                 {
-                    if (Method != null)
-                        Method();
+                    Method?.Invoke();
                     jr = JsonReturn.RunSuccess(true);
                 }
                 catch (Exception e)
@@ -2036,8 +2068,7 @@ select count(*) from ({1}) t1",withPerstr,sql);
                 BeginTransaction();
                 try
                 {
-                    if (Method != null)
-                        Method();
+                    Method?.Invoke();
                     Commit();
                     jr = JsonReturn.RunSuccess(true);
                 }
@@ -2078,9 +2109,10 @@ select count(*) from ({1}) t1",withPerstr,sql);
                 try
                 {
                     if (Method != null)
-                        Method();
+                        jr = Method();
+                    else //没有方法
+                        jr = JsonReturn.RunSuccess();
                     Commit();
-                    jr = JsonReturn.RunSuccess(true);
                 }
                 catch (Exception e)
                 {
@@ -2307,7 +2339,7 @@ select count(*) from ({1}) t1",withPerstr,sql);
 
 
             //获取该表的结构
-            DataTable dt = emptydt == null ? GetEmptyTable(TableName) : emptydt;
+            DataTable dt = emptydt ?? GetEmptyTable(TableName);
             List<string> fns = new List<string>();
             dt.Columns.ForEach<DataColumn>(dc =>
             {
@@ -2320,7 +2352,7 @@ select count(*) from ({1}) t1",withPerstr,sql);
 
             });
 
-            PropertyInfo[] allprops = pinfos == null ? type.GetProperties() : pinfos;
+            PropertyInfo[] allprops = pinfos ?? type.GetProperties();
 
 
 
@@ -2484,7 +2516,7 @@ select count(*) from ({1}) t1",withPerstr,sql);
             List<string> keys = new List<string>(KeyPropertyNames);
 
             //获取该表的结构
-            DataTable dt = emptydt == null ? GetEmptyTable(TableName) : emptydt;
+            DataTable dt = emptydt ?? GetEmptyTable(TableName);
             List<string> fns = new List<string>();
             dt.Columns.ForEach<DataColumn>(dc => {
                 fns.Add(dc.ColumnName.ToLower());
@@ -2495,7 +2527,7 @@ select count(*) from ({1}) t1",withPerstr,sql);
                 }
             });
 
-            PropertyInfo[] allprops = pinfos == null ? type.GetProperties() : pinfos;
+            PropertyInfo[] allprops = pinfos ?? type.GetProperties();
             foreach (object entity in entitys)
             {
                 List<string> Lists1 = new List<string>();//临时列表,用来存储insert后面的字段名列表
@@ -2645,11 +2677,11 @@ select count(*) from ({1}) t1",withPerstr,sql);
             List<string> keys = new List<string>(KeyPropertyNames);
 
             //获取该表的结构
-            DataTable dt = emptydt == null ? GetEmptyTable(TableName) : emptydt;
+            DataTable dt = emptydt ?? GetEmptyTable(TableName);
             List<string> fns = new List<string>();
             dt.Columns.ForEach<DataColumn>(dc => fns.Add(dc.ColumnName.ToLower()));
 
-            PropertyInfo[] allprops = pinfos == null ? type.GetProperties() : pinfos;
+            PropertyInfo[] allprops = pinfos ?? type.GetProperties();
 
             foreach (object entity in entitys)
             {
@@ -2662,9 +2694,8 @@ select count(*) from ({1}) t1",withPerstr,sql);
 
                 //用于保存的字段
                 //获取该对象的所有属性
-                if (entity is IDictionary) //为键值对象
+                if (entity is IDictionary obj) //为键值对象
                 {
-                    IDictionary obj = (IDictionary)entity;
                     foreach (string key in obj.Keys)
                     {
                         string fn = key.ToString();
@@ -2822,11 +2853,10 @@ select count(*) from ({1}) t1",withPerstr,sql);
 
             Action<object, string, object> SetEntityPropertyValue;
 
-            if (entity is IDictionary) //为键值对象
+            if (entity is IDictionary obj) //为键值对象
             {
-                IDictionary obj = (IDictionary)entity;
-
-                SetEntityPropertyValue = new Action<object, string, object>((rec, fn, v) => {
+                SetEntityPropertyValue = new Action<object, string, object>((rec, fn, v) =>
+                {
                     IDictionary curObj = (IDictionary)rec;
                     if (curObj.Contains(fn))
                     {
@@ -2849,7 +2879,7 @@ select count(*) from ({1}) t1",withPerstr,sql);
                     }
                     if (fns.Contains(fn.ToLower())) //该属性值可以保存
                     {
-                        if (!autoValueFields.Exists(f=>f.IsEquals(fn)))//如果是自动增长字段，则不能进行保存或赋值
+                        if (!autoValueFields.Exists(f => f.IsEquals(fn)))//如果是自动增长字段，则不能进行保存或赋值
                         {
                             Lists1.Add(Function.ConvertField(fn));
                             Lists2.Add(Function.ConvertParameter(fn));
@@ -2898,12 +2928,12 @@ select count(*) from ({1}) t1",withPerstr,sql);
                     }
                     if (fns.Contains(fn.ToLower())) //该属性值可以保存
                     {
-                        if (!autoValueFields.Exists(f=>f.IsEquals(fn)))//如果是自动增长字段，则不能进行保存或赋值
+                        if (!autoValueFields.Exists(f => f.IsEquals(fn)))//如果是自动增长字段，则不能进行保存或赋值
                         {
                             Lists1.Add(Function.ConvertField(fn));
                             Lists2.Add(Function.ConvertParameter(fn));
                             cmdNew.Parameters.Add(Function.CreateParameter(fn, v));
-                            
+
                             Lists.Add(string.Format("{0}={1}", Function.ConvertField(fn), Function.ConvertParameter(fn)));
                             cmd.Parameters.Add(Function.CreateParameter(fn, v));
                         }
@@ -2960,7 +2990,7 @@ select count(*) from ({1}) t1",withPerstr,sql);
         /// <returns></returns>
         public bool UpdateObject(object entity, string TableName, string KeyPropertyName, params string[] UpdatePropertyNames)
         {
-            return UpdateObject(entity, TableName, KeyPropertyName, UpdatePropertyNames);
+            return UpdateObject(entity, TableName,new string[] { KeyPropertyName }, UpdatePropertyNames);
         }
 
         public bool UpdateObject(object entity, string TableName, string[] KeyPropertyNames,params string[] UpdatePropertyNames)
@@ -3006,16 +3036,15 @@ select count(*) from ({1}) t1",withPerstr,sql);
             List<string> UpFields = new List<string>(UpdatePropertyNames);
 
 
-            if (entity is IDictionary) //为键值对象
+            if (entity is IDictionary obj) //为键值对象
             {
-                IDictionary obj = (IDictionary)entity;
                 foreach (object key in obj.Keys)
                 {
                     string fn = key.ToString();
                     object v = DBHelper.ConvertValue(obj[key]);
                     //检测是否有映射
-                    
-                    if (Prop2FieldMap != null && Prop2FieldMap.Count>0 && Prop2FieldMap.ContainsKey(fn))
+
+                    if (Prop2FieldMap != null && Prop2FieldMap.Count > 0 && Prop2FieldMap.ContainsKey(fn))
                     {
                         fn = Prop2FieldMap[fn];
                     }
@@ -3088,7 +3117,7 @@ select count(*) from ({1}) t1",withPerstr,sql);
             //先保存主表记录
             object MasterObj = MDMaps.MasterEntity;
             SaveNewObject(MDMaps.MasterEntity, MDMaps.MasterTableName, MDMaps.Property2FieldMap);
-            Type mtype = MDMaps.MasterEntity != null ? MDMaps.MasterEntity.GetType() : null;
+            Type mtype = MDMaps.MasterEntity?.GetType();
 
             //再保存明细表记录
             foreach (DetailMapInfo dmap in MDMaps.DetailInfos)
@@ -3125,7 +3154,7 @@ select count(*) from ({1}) t1",withPerstr,sql);
         {
             //先保存主表
             SaveObject(MDMaps.MasterEntity, MDMaps.MasterTableName, MDMaps.Property2FieldMap, MDMaps.KeyPropertyNames);
-            Type mtype = MDMaps.MasterEntity != null ? MDMaps.MasterEntity.GetType() : null;
+            Type mtype = MDMaps.MasterEntity?.GetType();
             //再保存明细表，注意，这里一定要区分哪些是新增、哪些是修改、哪些是册除
             foreach (DetailMapInfo dmap in MDMaps.DetailInfos)
             {

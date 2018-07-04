@@ -9,7 +9,7 @@ namespace RS.Core
     {
         public static IFilter CreateIFilter(IDbDriver db = null)
         {
-            IFilter filter= new EmptySqlFilter(db);           
+            IFilter filter = new EmptySqlFilter(db);
             return filter;
         }
 

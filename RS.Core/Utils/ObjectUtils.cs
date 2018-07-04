@@ -328,12 +328,12 @@ namespace RS.Core
                         }
                         catch
                         {
-                            v = (T)GetObjectValue<T>(RecordFieldValue);
+                            v = (T)GetValue<T>(RecordFieldValue);
                         }
                     }
                     else
                     {
-                        v = (T)GetObjectValue<T>(RecordFieldValue);
+                        v = (T)GetValue<T>(RecordFieldValue);
                     }
                     return v;
                 }
@@ -471,7 +471,7 @@ namespace RS.Core
             }
             return rtn;
         }
-        public static object GetObjectValue<T>(this object v)
+        public static T GetValue<T>(this object v)
         {
             object rtn = null;
             Type t = typeof(T);
@@ -522,7 +522,7 @@ namespace RS.Core
             else
                 rtn = default(T);
 
-            return rtn;
+            return (T)rtn;
         }
         /// <summary>
         /// 返回具有指定T类型而且其值等效于指定对象的System.Object
@@ -545,7 +545,7 @@ namespace RS.Core
                     }
                     catch
                     {
-                        v = (T)GetObjectValue<T>(jo.ToObject(typeof(object)));
+                        v = (T)GetValue<T>(jo.ToObject(typeof(object)));
                     }
                     return v;
                 }
@@ -557,7 +557,7 @@ namespace RS.Core
                     }
                     catch
                     {
-                        v = (T)GetObjectValue<T>(RecordFieldValue);
+                        v = (T)GetValue<T>(RecordFieldValue);
                     }
                     return v;
                 }

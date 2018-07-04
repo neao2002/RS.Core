@@ -116,7 +116,8 @@ namespace RS.Core
         public DynamicObj(IDictionary<string, object> dictionary, IEqualityComparer<string> comparer)
             : base(dictionary, comparer)
         { }
-        public DynamicObj(int capacity, IEqualityComparer<string> comparer) : base(capacity, comparer) { }
+        public DynamicObj(int capacity, IEqualityComparer<string> comparer) : base(capacity, comparer)
+        { }
 
 
         public object Get(string key)

@@ -66,7 +66,8 @@ namespace RS.Core.Cache
         /// <summary>
         /// 构造函数：指定同步间隔时间及所有数据同步的委托，只适合那种更新较快的项
         /// </summary>
-        /// <param name="timer"></param>
+        /// <param name="GapSpan"></param>
+        /// <param name="method"></param>
         internal CacheItem(TimeSpan GapSpan, Func<Dictionary<TKey, TValue>> method)
         {
             GetAllMethod = method;
@@ -131,7 +132,9 @@ namespace RS.Core.Cache
             myCacheItem.GapSpanTime = GapSpan;
             GetCacheDataMethod = method;
         }
-
+        /// <summary>
+        /// 析构函数
+        /// </summary>
         ~CacheItem()
         {
             Dispose();

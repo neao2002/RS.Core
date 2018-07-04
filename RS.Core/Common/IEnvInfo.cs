@@ -13,15 +13,19 @@ namespace RS.Core.Common
         /// 应用系统类型（PC端系统，APP应用，微信应用，微信小程序)
         /// </summary>
         AppType AppType { get; }
-
-
-        void Write(string content);
-        void Write(byte[] bytes);
-        void Output();
-
-
-
-
+        /// <summary>
+        /// 当前应用系统默认数据库链接字符串
+        /// </summary>
+        string DbConnectstring { get;  }
+        /// <summary>
+        /// 获取当前操作终端IP地址信息
+        /// </summary>
+        /// <returns></returns>
+        string GetClientIP();
+        /// <summary>
+        /// 应用系统ID表示该系统的唯一标识
+        /// </summary>
+        string SystemID { get; }
     }
 
     /// <summary>

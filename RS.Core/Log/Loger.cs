@@ -183,16 +183,16 @@ namespace RS.Core
         /// <returns></returns>
         private static string GetLogFileName()
         {
-            //if (logPath.IsWhiteSpace())
-            //    logPath = "log";
-            //try
-            //{
-            //    if (!Directory.Exists(logPath))
-            //    {
-            //        Directory.CreateDirectory(logPath);
-            //    }
-            //}
-            //catch { }
+            if (logPath.IsWhiteSpace())
+                logPath = "log";
+            try
+            {
+                if (!Directory.Exists(logPath))
+                {
+                    Directory.CreateDirectory(logPath);
+                }
+            }
+            catch { }
             return Path.Combine(logPath, string.Format("Log{0:yyyyMMdd}.txt", DateTime.Now));
         }
         #endregion
@@ -202,22 +202,22 @@ namespace RS.Core
         //日志表必须包含以下几个字段:logid:主键ID(int 自动赠长），sysdomain:系统域名，ip:IP，logTime:日志时间，logcontent:日志详细内容
         private static void logToTable(string ip, string domain, string logtype, DateTime logtime, string logcontent)
         {
-            //try
-            //{
-            //    DbUtils db = DbUtils.NewDB(SqlConnectStr, DBType);
+            try
+            {
+                DbUtils db = DbUtils.NewDB(SqlConnectStr, DBType);
 
-            //    //自动清空2年前日志
-            //    db.ExecuteCommand(System.Data.CommandType.Text, string.Format("delete from {0} where logtime<@logtime", logTable), db.Function.CreateParameter("@logtime", logtime.AddYears(-1)));
+                //自动清空2年前日志
+                db.ExecuteCommand(System.Data.CommandType.Text, string.Format("delete from {0} where logtime<@logtime", logTable), db.Function.CreateParameter("@logtime", logtime.AddYears(-1)));
 
-            //    //追加日志
-            //    db.ExecuteCommand(System.Data.CommandType.Text, string.Format("insert into {0} (sysdomain,ip,logtime,logtype,logcontent) values (@sysdomain,@ip,@logtime,@logtype,@logcontent)", logTable),
-            //        db.Function.CreateParameter("@sysdomain", domain),
-            //        db.Function.CreateParameter("@ip", ip),
-            //        db.Function.CreateParameter("@logtime", logtime),
-            //        db.Function.CreateParameter("@logtype", logtype),
-            //        db.Function.CreateParameter("@logcontent", logcontent));
-            //}
-            //catch { }
+                //追加日志
+                db.ExecuteCommand(System.Data.CommandType.Text, string.Format("insert into {0} (sysdomain,ip,logtime,logtype,logcontent) values (@sysdomain,@ip,@logtime,@logtype,@logcontent)", logTable),
+                    db.Function.CreateParameter("@sysdomain", domain),
+                    db.Function.CreateParameter("@ip", ip),
+                    db.Function.CreateParameter("@logtime", logtime),
+                    db.Function.CreateParameter("@logtype", logtype),
+                    db.Function.CreateParameter("@logcontent", logcontent));
+            }
+            catch { }
         }
         #endregion
 

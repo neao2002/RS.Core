@@ -12,6 +12,8 @@ using RS.Core.Cache;
 using RS.Core.Data;
 using RS.Core.Net;
 using RS.Core.Utils;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 
 namespace RS.Core
 {
@@ -1147,14 +1149,38 @@ namespace RS.Core
 
 
         #region 读取配置文件
+
+        //public static IConfiguration Configuration { get; set; }
+        //static AppConfigurtaionServices()
+        //{
+        //    //ReloadOnChange = true 当appsettings.json被修改时重新加载            
+        //    Configuration = new ConfigurationBuilder()
+        //    .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })
+        //    .Build();
+        //}
+
+
+
+
         public static string GetAppSetting(string key)
         {
-            return "";// System.Configuration.ConfigurationManager.AppSettings[key].ToStringValue();
+            IConfiguration Configuration = new ConfigurationBuilder()
+.Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })
+.Build();
+            return Configuration[key];
+
+           // return "";// System.Configuration.ConfigurationManager.AppSettings[key].ToStringValue();
         }
 
         public static string GetConnectionString(string key)
         {
-            return "";// System.Configuration.ConfigurationManager.ConnectionStrings[key].ConnectionString;
+            IConfiguration Configuration = new ConfigurationBuilder()
+.Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })
+.Build();
+            return Configuration.GetConnectionString(key);
+
+
+            //return "";// System.Configuration.ConfigurationManager.ConnectionStrings[key].ConnectionString;
         }
         #endregion
 
