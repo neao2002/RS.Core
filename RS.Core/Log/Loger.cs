@@ -1,8 +1,8 @@
-﻿using RS.Core.Data;
+﻿using RS.Data;
 using System;
 using System.IO;
 
-namespace RS.Core
+namespace RS
 {
     /// <summary>
     /// 日志服务
@@ -204,7 +204,11 @@ namespace RS.Core
         {
             try
             {
-                DbUtils db = DbUtils.NewDB(SqlConnectStr, DBType);
+                IDbContext db;
+                if (SqlConnectStr.IsWhiteSpace())
+                    db = Global.DbContextFactory.CreateContext();
+                else
+                    db= DbContextFactory.CreateFactory(SqlConnectStr, DBType).CreateContext();
 
                 //自动清空2年前日志
                 db.ExecuteCommand(System.Data.CommandType.Text, string.Format("delete from {0} where logtime<@logtime", logTable), db.Function.CreateParameter("@logtime", logtime.AddYears(-1)));

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core.MyXls.ByteUtil
+namespace RS.Xls.ByteUtil
 {
     public partial class Bytes
     {

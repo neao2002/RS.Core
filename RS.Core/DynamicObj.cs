@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace RS.Core
+namespace RS
 {
     public class DList<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable
     {

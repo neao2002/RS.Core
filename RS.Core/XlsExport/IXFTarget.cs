@@ -1,4 +1,4 @@
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     internal interface IXFTarget
     {

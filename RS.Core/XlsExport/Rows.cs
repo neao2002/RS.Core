@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Represents and manages a collection of Row objects for a Worksheet.

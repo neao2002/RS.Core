@@ -1,4 +1,4 @@
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Contains constant values pertaining to the BIFF8 format for use in MyXLS.

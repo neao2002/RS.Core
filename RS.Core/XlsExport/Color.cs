@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Represents an RGB color value.  Use the values in Colors.  Custom colors are not yet supported.

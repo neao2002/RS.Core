@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Transactions;
 
-namespace RS.Core.Data
+namespace RS.Data
 {
     /// <summary>
     /// 数据访问对象静态类
@@ -246,7 +246,7 @@ namespace RS.Core.Data
             for (int i = 0; i < dr.FieldCount; i++)
             {
                 string fn = dr.GetName(i);
-                PropertyInfo p = t.GetProperty(fn);
+                PropertyInfo p = t.GetProperty(fn,BindingFlags.Public|BindingFlags.Instance|BindingFlags.SetField);
                 if (p != null && p.CanWrite)
                 {
                     object v = dr.GetValue(i);
@@ -343,7 +343,6 @@ namespace RS.Core.Data
             return obj;
         }
         #endregion
-
         
         #region 扩展方法
         /// <summary>

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     //http://www.mvps.org/dmcritchie/excel/colors.htm
     internal class Palette

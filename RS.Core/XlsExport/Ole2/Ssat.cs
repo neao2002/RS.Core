@@ -1,7 +1,7 @@
 using System;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyOle2
+namespace RS.Xls.Ole2
 {
     /// <summary>
     /// Represents the SSAT (Short Sector Allocation Table) of an OLE2 Document.

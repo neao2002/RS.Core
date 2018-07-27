@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyOle2.Metadata
+namespace RS.Xls.Ole2.Metadata
 {
     /// <summary>
     /// Represents a SummaryInformation stream in an Ole2 Document.

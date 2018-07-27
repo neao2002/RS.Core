@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// This is not done by any stretch of the imagination.  What a can of worms!

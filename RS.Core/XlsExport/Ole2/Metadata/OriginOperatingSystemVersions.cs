@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core.MyOle2.Metadata
+namespace RS.Xls.Ole2.Metadata
 {
     /// <summary>
     /// Versions available to describe the specified Operating System.

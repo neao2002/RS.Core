@@ -1,7 +1,7 @@
 using System.Collections;
 using System;
 
-namespace RS.Core.Cache
+namespace RS.Cache
 {
 	/// <summary>
 	/// 先进先出的淘汰算法

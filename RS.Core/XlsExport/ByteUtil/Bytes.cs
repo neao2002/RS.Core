@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 
-namespace RS.Core.MyXls.ByteUtil
+namespace RS.Xls.ByteUtil
 {
     /// <summary>
     /// A helper class to manage byte arrays, allowing subdividing and combining

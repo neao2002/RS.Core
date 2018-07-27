@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Threading;
 
-namespace RS.Core.Cache
+namespace RS.Cache
 {
     /// <summary>
 	/// »º´æÏî

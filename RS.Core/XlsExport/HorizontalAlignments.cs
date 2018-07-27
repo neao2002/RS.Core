@@ -1,4 +1,4 @@
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// The different horizontal alignments available in Excel.

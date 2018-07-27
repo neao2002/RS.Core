@@ -1,4 +1,4 @@
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Underline types available in an Excel document.

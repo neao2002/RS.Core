@@ -1,16 +1,16 @@
 using System;
 using System.IO;
 using System.Text;
-using RS.Core.Data;
-using RS.Core.MyOle2;
-using RS.Core.MyOle2.Metadata;
-using RS.Core.MyXls.ByteUtil;
+using RS.Data;
+using RS.Xls.Ole2;
+using RS.Xls.Ole2.Metadata;
+using RS.Xls.ByteUtil;
 using System.Data;
 using System.Collections.Generic;
 using System.Collections;
 using System.Web;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// The root class of MyXls, containing general configuration properties and references to
@@ -19,7 +19,7 @@ namespace RS.Core.MyXls
     /// </summary>
     public class XlsDocument
     {
-        private readonly MyOle2.Ole2Document _ole2Doc;
+        private readonly Ole2Document _ole2Doc;
         private readonly Workbook _workbook;
         private readonly SummaryInformationSection _summaryInformation;
         private readonly DocumentSummaryInformationSection _documentSummaryInformation;
@@ -36,7 +36,7 @@ namespace RS.Core.MyXls
             _forceStandardOle2Stream = false;
             _isLittleEndian = true;
 
-            _ole2Doc = new MyOle2.Ole2Document();
+            _ole2Doc = new Ole2Document();
             SetOleDefaults();
 
             _summaryInformation = new SummaryInformationSection();
@@ -70,7 +70,7 @@ namespace RS.Core.MyXls
             }
 
             //TODO: SummaryInformationSection and DocumentSummaryInformationSections should be read by MyOle2
-            _workbook = new Workbook(this, _ole2Doc.Streams[_ole2Doc.Streams.GetIndex(RS.Core.MyOle2.Directory.Biff8Workbook)].Bytes, workbookBytesReadCallback);
+            _workbook = new Workbook(this, _ole2Doc.Streams[_ole2Doc.Streams.GetIndex(Ole2.Directory.Biff8Workbook)].Bytes, workbookBytesReadCallback);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace RS.Core.MyXls
         /// <summary>
         /// Gets this RFID.Lib.MyXls XlsDocument's OLE2 Document.
         /// </summary>
-        public MyOle2.Ole2Document OLEDoc { get { return _ole2Doc; } }
+        public Ole2.Ole2Document OLEDoc { get { return _ole2Doc; } }
 
         /// <summary>
         /// Gets this RFID.Lib.MyXls XlsDocument's Workbook.

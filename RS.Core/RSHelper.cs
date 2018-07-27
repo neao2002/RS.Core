@@ -4,8 +4,5 @@ using System.Text;
 
 namespace RS.Core
 {
-    public static class RSHelper
-    {
-
-    }
+   
 }

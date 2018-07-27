@@ -6,7 +6,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace RS.Core.Net
+namespace RS.Net
 {
 	/// <summary>
 	/// Class1 客户连接通道/侦听通道.

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     ///<summary>
     /// Provides named references to all colors in the standard (BIFF8) Excel

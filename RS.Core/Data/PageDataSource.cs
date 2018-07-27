@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace RS.Core.Data
+namespace RS.Data
 {
     /// <summary>
     /// 采用分页方式获取的数据源
@@ -17,7 +17,8 @@ namespace RS.Core.Data
 
         // 摘要: 
         //     初始化 System.Web.UI.WebControls.PagedDataSource 类的新实例。
-        public PagedDataSource() {
+        public PagedDataSource()
+        {
             Datas = new List<object>();
             CurrentPageDatas = new List<object>();
         }
@@ -31,17 +32,21 @@ namespace RS.Core.Data
         /// <summary>
         /// 获取或设置当前页的索引
         /// </summary>
-        public int CurrentPageIndex { get {
+        public int CurrentPageIndex
+        {
+            get
+            {
                 int index = _CurrentPageIndex;
                 if (PageSize >= DataSourceCount) //则只有一页
                     index = 0;
                 else if (PageCount > 0 && _CurrentPageIndex > PageCount)
-                    index= PageCount - 1;
+                    index = PageCount - 1;
                 else if (_CurrentPageIndex < 0)
                     index = 0;
                 return index;
             }
-            set {
+            set
+            {
                 int oldIndex = CurrentPageIndex; //原来的页
                 int newIndex = value;//新页
                 if (PageSize >= DataSourceCount) //则只有一页
@@ -53,7 +58,7 @@ namespace RS.Core.Data
 
                 _CurrentPageIndex = newIndex;
 
-                if (oldIndex!=newIndex)//页索引有变化，重新设置当前数据索引
+                if (oldIndex != newIndex)//页索引有变化，重新设置当前数据索引
                 {
                     ResetPage();
                 }
@@ -98,7 +103,8 @@ namespace RS.Core.Data
         /// </summary>
         public int PageCount
         {
-            get {
+            get
+            {
                 if (PageSize <= 0) //不分页
                     return DataSourceCount > 0 ? 1 : 0;
 
@@ -110,14 +116,19 @@ namespace RS.Core.Data
         /// <summary>
         ///  获取或设置要在单页上显示的项数。
         /// </summary>
-        public int PageSize { get {
+        public int PageSize
+        {
+            get
+            {
                 return pageSize;
-            } set
+            }
+            set
             {
                 bool ischange = pageSize != value;
                 pageSize = value;
                 if (ischange) ResetPage();
-            } } 
+            }
+        }
         public object SyncRoot => this;
 
 
@@ -126,15 +137,17 @@ namespace RS.Core.Data
         /// </summary>
         /// <param name="array">从零开始的 System.Array，它接收来自数据源的复制项。</param>
         /// <param name="index">指定的 System.Array 中接收复制内容的第一个位置。</param>
-        public void CopyTo(Array array, int index) {
+        public void CopyTo(Array array, int index)
+        {
             ((ICollection)Datas).CopyTo(array, index);
         }
         /// <summary>
         /// 返回一个实现了 System.Collections.IEnumerator 的对象，该对象包含数据源中的所有项。
         /// </summary>
         /// <returns></returns>
-        public IEnumerator GetEnumerator() {
-            
+        public IEnumerator GetEnumerator()
+        {
+
             return CurrentPageDatas.GetEnumerator();
         }
 

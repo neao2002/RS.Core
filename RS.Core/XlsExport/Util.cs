@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     internal static class Util
     {

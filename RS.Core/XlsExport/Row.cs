@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Represents a single row in a Worksheet.

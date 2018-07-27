@@ -1,6 +1,6 @@
 using System;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Worksheet Visibility values available in Excel (whether the Worksheet will be visible to the user).

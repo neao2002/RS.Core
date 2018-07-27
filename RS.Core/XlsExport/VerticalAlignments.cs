@@ -1,4 +1,4 @@
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Vertical alignments available in an Excel document.

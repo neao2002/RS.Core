@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using RS.Core.MyXls.ByteUtil;
-using RS.Core.Data;
+using RS.Xls.ByteUtil;
+using RS.Data;
 using System.Text.RegularExpressions;
 using System.Collections;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// A main class for an XlsDocument, representing one Worksheet in the Workbook.  The 

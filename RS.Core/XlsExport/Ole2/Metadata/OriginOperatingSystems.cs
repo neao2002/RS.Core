@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core.MyOle2.Metadata
+namespace RS.Xls.Ole2.Metadata
 {
     ///<summary>
     /// Origin Operating System choices in OLE2 SummaryInformation streams.

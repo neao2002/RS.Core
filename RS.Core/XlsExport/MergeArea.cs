@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Defines a contiguous group of Merged Cells on a Worksheet.

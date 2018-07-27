@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyOle2
+namespace RS.Xls.Ole2
 {
     /// <summary>
     /// Represents and manages the collection of Streams for a given OLE2 Document.

@@ -1,6 +1,6 @@
 using System;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Excel Worksheet Types

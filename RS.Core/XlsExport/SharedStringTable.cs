@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 using System;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// NOTE: This seems kludgy and wrong, but it was the easiest way

@@ -1,6 +1,6 @@
 using System;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Represents and manages a collection of Cells for a Worksheet.

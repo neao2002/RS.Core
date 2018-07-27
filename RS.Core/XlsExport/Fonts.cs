@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// A collection of Font objects.

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyOle2.Metadata
+namespace RS.Xls.Ole2.Metadata
 {
     public partial class MetadataStream
     {

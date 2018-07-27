@@ -1,6 +1,6 @@
 using System;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
 	/// <summary>Relative Weight of a font.</summary>
 	/// <remarks>Based on the <a href="http://www.microsoft.com/typography/otspec/otff.htm">OpenType</a> specification.</remarks>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using RS.Core;
 
-namespace RS.Core.Cache
+namespace RS.Cache
 {
     /// <summary>
     /// 缓存实际项内容

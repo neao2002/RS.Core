@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Collections.Generic;
 
-namespace RS.Core
+namespace RS
 {
     /// <summary>
     /// 字符串加解密类

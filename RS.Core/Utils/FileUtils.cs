@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace RS.Core
+namespace RS
 {
     /// <summary>
     /// 文件操作助手类：主要用于取指定文件内容或将指定内容写入文件

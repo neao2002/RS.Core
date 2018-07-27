@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     internal static class RID
 	{

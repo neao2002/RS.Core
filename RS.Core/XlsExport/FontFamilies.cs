@@ -1,4 +1,4 @@
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// The Font Families available for formatting in Excel.

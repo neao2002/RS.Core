@@ -5,7 +5,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections;
 
-namespace RS.Core
+namespace RS
 {
     /// <summary>
     /// 集合相关扩展方法

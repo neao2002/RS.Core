@@ -1,4 +1,4 @@
-namespace RS.Core.Cache
+namespace RS.Cache
 {
 	/// <summary>
 	/// 淘汰算法的接口

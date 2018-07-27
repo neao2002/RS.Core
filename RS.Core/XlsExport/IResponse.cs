@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core
+namespace RS.Xls
 {
     public interface IResponse
     {

@@ -1,4 +1,4 @@
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Indicates local culture's text direction (left-to-right or right-to-left).

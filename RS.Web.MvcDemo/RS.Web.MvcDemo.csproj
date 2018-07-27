@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RS.Core\RS.Core.csproj" />
+    <ProjectReference Include="..\RS.Sys\RS.Sys.csproj" />
+    <ProjectReference Include="..\RS.Web.Mvc\RS.Web.Mvc.csproj" />
+  </ItemGroup>
+
+</Project>

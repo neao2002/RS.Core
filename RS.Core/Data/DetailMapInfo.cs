@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace RS.Core.Data
+namespace RS.Data
 {
     /// <summary>
     /// 父子明细表映射对象类，主要用于存储父子明细表信息

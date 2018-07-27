@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace RS.Core
+namespace RS
 {
     /// <summary>
     /// 定时触发计时器,用于定时进行同步缓存或其它操作

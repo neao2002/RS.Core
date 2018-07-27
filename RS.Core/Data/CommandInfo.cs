@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Common;
 
-namespace RS.Core.Data
+namespace RS.Data
 {
     internal sealed class CommandInfo
     {

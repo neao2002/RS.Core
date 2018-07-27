@@ -1,7 +1,7 @@
 using System;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyOle2
+namespace RS.Xls.Ole2
 {
     /// <summary>
     /// Represents the MSAT (Master Sector Allocation Table) for an OLE2 Document.

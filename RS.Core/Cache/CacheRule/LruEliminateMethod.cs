@@ -1,7 +1,7 @@
 using System.Collections;
 using System;
 
-namespace RS.Core.Cache
+namespace RS.Cache
 {
 	/// <summary>
 	/// 最近访问淘汰算法

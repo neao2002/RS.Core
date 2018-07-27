@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace RS.Core.Utils
+namespace RS
 {
     public static class PathUtils
     {

@@ -6,9 +6,8 @@ using System.Reflection;
 using System.Collections;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
-using RS.Core.Common;
 
-namespace RS.Core
+namespace RS
 {
     /// <summary>
     /// 对象方法集
@@ -204,7 +203,7 @@ namespace RS.Core
         #endregion
 
         #region JSON对象序列化
-        public static JsonUtil JSON { get; } = new JsonUtil();
+        public static JsonUtils JSON { get; } = new JsonUtils();
         #endregion
 
 

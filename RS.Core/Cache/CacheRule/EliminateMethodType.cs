@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Core.Cache
+namespace RS.Cache
 {
     /// <summary>
     /// 缓存存储规则类型

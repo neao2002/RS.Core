@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     internal class Record
     {
@@ -10,7 +10,7 @@ namespace RS.Core.MyXls
         protected Bytes _data = new Bytes();
         protected List<Record> _continues = new List<Record>();
 
-        public static Record Empty = new Record(MyXls.RID.Empty, new byte[0]);
+        public static Record Empty = new Record(Xls.RID.Empty, new byte[0]);
 
         protected Record()
         {
@@ -23,7 +23,7 @@ namespace RS.Core.MyXls
 
         internal Record(byte[] rid, Bytes data)
         {
-            _rid = RS.Core.MyXls.RID.ByteArray(rid);
+            _rid = RS.Xls.RID.ByteArray(rid);
             int offset = 0;
             int bytesRemaining = data.Length;
             int continueIndex = -1;
@@ -33,7 +33,7 @@ namespace RS.Core.MyXls
                 if (continueIndex == -1)
                     _data = data.Get(offset, bytesToAppend);
                 else
-                    _continues.Add(new Record(MyXls.RID.CONTINUE, data.Get(offset, bytesToAppend)));
+                    _continues.Add(new Record(Xls.RID.CONTINUE, data.Get(offset, bytesToAppend)));
                 offset += bytesToAppend;
                 bytesRemaining -= bytesToAppend;
                 continueIndex++;
@@ -81,7 +81,7 @@ namespace RS.Core.MyXls
                 }
                 else
                 {
-                    record.Append(MyXls.RID.CONTINUE);
+                    record.Append(Xls.RID.CONTINUE);
                     record.Append(BitConverter.GetBytes(length));
                     record.Append(data.Get(offset, length));
                 }
@@ -94,13 +94,13 @@ namespace RS.Core.MyXls
 
         internal bool IsCellRecord()
         {
-            return (_rid == MyXls.RID.RK ||
-                    _rid == MyXls.RID.NUMBER ||
-                    _rid == MyXls.RID.LABEL ||
-                    _rid == MyXls.RID.LABELSST ||
-                    _rid == MyXls.RID.MULBLANK ||
-                    _rid == MyXls.RID.MULRK ||
-                    _rid == MyXls.RID.FORMULA);
+            return (_rid == Xls.RID.RK ||
+                    _rid == Xls.RID.NUMBER ||
+                    _rid == Xls.RID.LABEL ||
+                    _rid == Xls.RID.LABELSST ||
+                    _rid == Xls.RID.MULBLANK ||
+                    _rid == Xls.RID.MULRK ||
+                    _rid == Xls.RID.FORMULA);
         }
 
         /// <summary>
@@ -115,15 +115,15 @@ namespace RS.Core.MyXls
             Record lastNonContinue = Record.Empty;
             while (i < (stream.Length - 4))
             {
-                byte[] rid = RS.Core.MyXls.RID.ByteArray(stream.Get(i, 2).ByteArray);
+                byte[] rid = RS.Xls.RID.ByteArray(stream.Get(i, 2).ByteArray);
                 Bytes data = new Bytes();
-                if (rid == MyXls.RID.Empty)
+                if (rid == Xls.RID.Empty)
                     break;
                 int length = BitConverter.ToUInt16(stream.Get(i + 2, 2).ByteArray, 0);
                 data = stream.Get(i + 4, length);
                 Record record = new Record(rid, data);
                 i += (4 + length);
-                if (rid == MyXls.RID.CONTINUE)
+                if (rid == Xls.RID.CONTINUE)
                 {
                     if (lastNonContinue == Record.Empty)
                         throw new ApplicationException("Found CONTINUE record without previous/parent record.");

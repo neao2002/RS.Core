@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 using Io = System.IO;
 
-namespace RS.Core.MyOle2
+namespace RS.Xls.Ole2
 {
     /// <summary>
     /// Represents an OLE2 Compound Document format Document.

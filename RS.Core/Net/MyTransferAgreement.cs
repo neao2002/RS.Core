@@ -3,7 +3,7 @@ using System.Text;
 using System.Threading;
 using System.Collections;
 using System.Security.Cryptography;
-namespace RS.Core.Net
+namespace RS.Net
 {
 	/// <summary>
 	/// MyTransferAgreement 的摘要说明。

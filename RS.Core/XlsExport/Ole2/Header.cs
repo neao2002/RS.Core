@@ -1,7 +1,7 @@
 using System;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyOle2
+namespace RS.Xls.Ole2
 {
     /// <summary>
     /// Contains properties and information about the Header of an OLE2 document.

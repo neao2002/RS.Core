@@ -1,7 +1,7 @@
 using System;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// The XF (eXtended Format) contains formatting information for cells, rows, columns or styles.

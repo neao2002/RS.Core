@@ -1,7 +1,7 @@
 using System;
-using RS.Core.MyXls.ByteUtil;
+using RS.Xls.ByteUtil;
 
-namespace RS.Core.MyOle2
+namespace RS.Xls.Ole2
 {
     /// <summary>
     /// Represents a Stream (either standard or short) within an OLE2 Document.  This is the basic

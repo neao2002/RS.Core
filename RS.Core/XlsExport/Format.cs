@@ -1,7 +1,7 @@
 /*
 using System;
 
-namespace RS.Core.MyXls
+namespace RS.Xls
 {
     /// <summary>
     /// Represents a number Format (Currency, Percent, Fraction, Date, Time, etc.).  Currently unimplemented.

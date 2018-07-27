@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace RS.Core
+namespace RS
 {
     /// <summary>
     /// 线程服务控制容器，本容器可以托管各类定时激活的活动
