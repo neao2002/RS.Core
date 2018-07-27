@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RS.Lib.Demo;
 using RS.Sys;
-using RS.Core;
 using RS.Web.MvcDemo.Models;
 
 namespace RS.Web.MvcDemo.Controllers
@@ -39,7 +39,9 @@ namespace RS.Web.MvcDemo.Controllers
         public IActionResult BusView()
         {
             bool isEQ= WebHelper.Current == HttpContext;
-            ViewBag.Items =App.GetService<IBusService>().GetShopInfos();
+            
+            ViewBag.Items =App.GetService<IShopService>().GetShopInfos();
+            ViewBag.MyShop = App.GetService<IUserService>().GetMyShopInfo("1680623");
             return View();
         }
 

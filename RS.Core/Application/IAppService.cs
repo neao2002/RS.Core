@@ -17,10 +17,57 @@ namespace RS
     /// </summary>
     public class AppServiceBase
     {
-        public IDbContext DbContext { get; set; }
+        protected IDbContext db;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dbContext"></param>
         public AppServiceBase(IDbContext dbContext) 
         {
-            DbContext = dbContext;
+            db = dbContext;
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class AppServiceBase<T> where T:DALStoreBase
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        protected IDbContext db;
+        /// <summary>
+        /// 
+        /// </summary>
+        protected T store;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dbContext"></param>
+        public AppServiceBase(IDbContext dbContext)
+        {
+            db = dbContext;
+            store =App.CreateDALStore<T>(dbContext);
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public class DALStoreBase
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        protected IDbContext db;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dbContext"></param>
+        public DALStoreBase(IDbContext dbContext)
+        {
+            db = dbContext;
+        }
+    }
+    
 }

@@ -38,12 +38,17 @@ namespace RS
 
                 foreach (Type implementedAppServiceType in implementedAppServiceTypes)
                 {
-                    if (typeof(AppServiceBase).IsAssignableFrom(implementationType))
-                        services.AddScoped(implementedAppServiceType, implementationType);
+                    if (typeof(AppServiceBase).IsAssignableFrom(implementationType)|| typeof(AppServiceBase<>).IsAssignableFrom(implementationType))
+                        services.AddScoped(implementedAppServiceType, implementationType);                    
                     else
                         services.AddTransient(implementedAppServiceType, implementationType);
                 }
             }
+
+
+
+
+
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RS.Data;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -31,6 +32,18 @@ namespace RS
                 throw new ArgumentNullException("未注册请求域服务提供对象");
 
             return (T)RequestServices.GetService(typeof(T));
+        }
+
+        /// <summary>
+        /// 创建数据业务实体对象
+        /// 本方法主要是为底层服务数据处理时提供对象创建方法
+        /// </summary>
+        /// <typeparam name="T">业务数据处理对象</typeparam>
+        /// <param name="dbContext">数据库上下文对象/param>
+        /// <returns>返回业务数据对象实例</returns>
+        public static T CreateDALStore<T>(IDbContext dbContext) where T : DALStoreBase
+        {
+            return (T)Activator.CreateInstance(typeof(T), dbContext);
         }
     }
 }

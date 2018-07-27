@@ -7,7 +7,6 @@ using System.Runtime.Loader;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyModel;
-using RS.Core;
 
 namespace RS.Web.Mvc
 {

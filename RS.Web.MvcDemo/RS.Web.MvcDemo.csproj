@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RS.Core\RS.Core.csproj" />
+    <ProjectReference Include="..\RS.Lib.Demo\RS.Lib.Demo.csproj" />
     <ProjectReference Include="..\RS.Sys\RS.Sys.csproj" />
     <ProjectReference Include="..\RS.Web.Mvc\RS.Web.Mvc.csproj" />
   </ItemGroup>

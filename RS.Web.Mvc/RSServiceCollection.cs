@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
-using RS.Core;
 
 namespace RS.Web.Mvc
 {

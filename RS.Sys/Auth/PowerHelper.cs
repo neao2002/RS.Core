@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RS.Sys.App
+namespace RS.Sys.Auth
 {
     /// <summary>
     /// 授权控制类，注意，在公共库中是没有任何作用，必须要外部系统注册后才有效果

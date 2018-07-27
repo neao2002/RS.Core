@@ -165,7 +165,7 @@ namespace RS
         {
             return DbContextFactory.CreateFactory(ConnectionString, type).CreateContext();
         }
-       
+
         /// <summary>
         /// 测试当前默认连接是否成功
         /// </summary>
@@ -367,7 +367,7 @@ namespace RS
             //先序列化为json对象，再将json对象转为字节保存
             byte[] bs = Serializer.BinarySerialize(obj);
 
-            WriteBinaryFile(FilePath,bs, true);
+            WriteBinaryFile(FilePath, bs, true);
         }
         public static T ReadObjectFromFile<T>(string File)
         {
@@ -459,7 +459,7 @@ namespace RS
             Loger.RegisLogger(TypeExp, LogPath);
         }
 
-        public static void RegisLogger(LogType type, string SqlConnectstring, string LogTableName,DbDriverType dbType = DbDriverType.SQLServer)
+        public static void RegisLogger(LogType type, string SqlConnectstring, string LogTableName, DbDriverType dbType = DbDriverType.SQLServer)
         {
             Loger.RegisLogger(type, SqlConnectstring, LogTableName, dbType);
         }
@@ -1197,5 +1197,12 @@ namespace RS
         {
             return "";
         }
+
+        #region Json系列化对象
+        public static JsonUtils JSON { get; }=new JsonUtils();
+        
+        #endregion
+
+
     }
 }

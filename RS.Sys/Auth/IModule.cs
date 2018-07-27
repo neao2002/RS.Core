@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Sys.App
+namespace RS.Sys.Auth
 {
     /// <summary>
     /// 标准系统模块（子系统或模块系统，本身不代表具体模块功能，类似于功能目录）

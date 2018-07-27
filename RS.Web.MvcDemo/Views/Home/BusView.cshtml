@@ -2,6 +2,11 @@
 @{
     ViewData["Title"] = "BusView";
 }
+<div style="border:1px solid #0094ff;width:100%;padding:20px;line-height:25px;">
+    我的店铺信息Json:<br />
+    @Html.Raw(LibHelper.JSON.Serialize(ViewBag.MyShop))
+</div>
+
 <table style="border:1px solid #0094ff;width:100%">
     <thead>
         <tr style="height:30px;background-color:#edeaea">
@@ -11,7 +16,7 @@
     </thead>
     <tbody>
         @{
-            foreach (RS.Core.DynamicObj item in ViewBag.Items)
+            foreach (RS.DynamicObj item in ViewBag.Items)
             {
         <tr style="height:25px;">
             <td>@(item.Get<string>("ShopCode"))</td>

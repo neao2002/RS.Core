@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RS.Sys.App
+namespace RS.Sys.Auth
 {
     public interface IFun
     {
