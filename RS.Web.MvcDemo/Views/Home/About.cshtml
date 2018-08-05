@@ -5,3 +5,10 @@
 <h3>@ViewData["Message"]</h3>
 
 <p>Use this area to provide additional information.</p>
+
+@{
+    <div>@RS.Web.WebHelper.Current.Session.Id</div>
+
+}
+
+A unique identifier for the current session. This is not the same as the session   cookie since the cookie lifetime may not be the same as the session entry lifetime    in the data store.

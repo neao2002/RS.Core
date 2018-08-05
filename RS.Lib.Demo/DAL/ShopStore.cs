@@ -8,8 +8,10 @@ namespace RS.Lib.Demo
 {
     internal class ShopStore :DALStoreBase
     {
+        public static IDbContext mydb = null;
         public ShopStore(IDbContext dbContext):base(dbContext)
         {
+            mydb=db;
         }
 
 

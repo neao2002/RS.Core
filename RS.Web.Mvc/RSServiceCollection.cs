@@ -8,10 +8,12 @@ namespace RS.Web.Mvc
     public class RSServiceCollection : IRSServiceCollection
     {
         private IServiceCollection services;
+
         private RSServiceCollection(IServiceCollection _services)
         {
             services = _services;
         }
+
         public IRSServiceCollection AddScoped(Type serviceType, Type implementationType)
         {
             services.AddScoped(serviceType, implementationType);
@@ -30,9 +32,21 @@ namespace RS.Web.Mvc
             return this;
         }
 
+        public IRSServiceCollection AddSingleton(Type serviceType, Type implementationType)
+        {
+            services.AddSingleton(serviceType, implementationType);
+            return this;
+        }
+
         public IRSServiceCollection AddTransient(Type serviceType, Type implementationType)
         {
             services.AddTransient(serviceType, implementationType);
+            return this;
+        }        
+
+        public IRSServiceCollection AddSingletion(Type serviceType, Type implementationType)
+        {
+            services.AddSingleton(serviceType, implementationType);
             return this;
         }
 
@@ -40,8 +54,5 @@ namespace RS.Web.Mvc
         {
             return new RSServiceCollection(services);
         }
-
-
-
     }
 }

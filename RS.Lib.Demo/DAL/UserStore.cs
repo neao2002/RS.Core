@@ -10,6 +10,7 @@ namespace RS.Lib.Demo
     {
         public UserStore(IDbContext dbContext) : base(dbContext)
         {
+            
         }
 
         public UserShopInfo GetMyShopInfo(string UserID,IShopService shopSvr)

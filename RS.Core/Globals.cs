@@ -31,16 +31,26 @@ namespace RS
         /// </summary>
         public static IServiceProvider Services { get; internal set; }
 
-
+        /// <summary>
+        /// 系统默认用户供应者
+        /// </summary>
+        public static IAppUserProvider DefaultUserProvider { get; internal set; }
+        public static Type DefaultUserProviderType { get; internal set; }
+        public static Type DefaultUserType { get; internal set; }
         /// <summary>
         /// 注意全局服务提供对象
         /// </summary>
-        /// <param name="provider"></param>
+        /// <param name="provider">全局服务供应者</param>
         public static void RegServiceProvider(IServiceProvider provider)
         {
             Services = provider;
         }
-
+        public static void RegDefaultUserProvider<T,U>(U provider) where T: IAppUserProvider where U:T
+        {
+            DefaultUserProviderType = typeof(T);
+            DefaultUserType = typeof(IAppOperatorUser<T>);
+            DefaultUserProvider = provider;
+        }
 
         /// <summary>
         /// 调用数据工厂创建一个新的数据访问对象

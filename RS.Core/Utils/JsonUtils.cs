@@ -18,7 +18,12 @@ namespace RS
         /// <returns>反序列化的对象。</returns>
         public T Deserialize<T>(string input)
         {
-            T v=JsonConvert.DeserializeObject<T>(input);
+            T v = JsonConvert.DeserializeObject<T>(input, new JsonSerializerSettings()
+            {
+                MissingMemberHandling = MissingMemberHandling.Error
+            });
+            if (v == null) return default(T);
+
             if (v is DynamicObj)
             {
                 DynamicObj obj = v as DynamicObj;
@@ -47,27 +52,34 @@ namespace RS
         /// <returns> 反序列化的对象。</returns>
         public object Deserialize(string input, Type targetType)
         {
-            return JsonConvert.DeserializeObject(input, targetType);
+            return JsonConvert.DeserializeObject(input, targetType, new JsonSerializerSettings()
+            {
+                MissingMemberHandling = MissingMemberHandling.Error
+            });
         }
-        
+
         /// <summary>
         /// 将指定的 JSON 字符串转换为对象图。
         /// </summary>
         /// <param name="input">要进行反序列化的 JSON 字符串。</param>
         /// <returns>反序列化的对象。</returns>
         public object DeserializeObject(string input)
-        {   
+        {
             return JsonConvert.DeserializeObject(input);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public DynamicObj DeserializeDynamicObj(string input)
         {
-            
-               DynamicObj obj = JsonConvert.DeserializeObject<DynamicObj>(input);
+            DynamicObj obj = JsonConvert.DeserializeObject<DynamicObj>(input);
+            if (obj == null) return new DynamicObj();
 
-            string[] keys =new string[obj.Count];
-            obj.Keys.CopyTo(keys,0);  // .ToList<string>();
+            string[] keys = new string[obj.Count];
+            obj.Keys.CopyTo(keys, 0);  // .ToList<string>();
             foreach (string key in keys)
             {
                 object co = obj[key];
@@ -82,10 +94,15 @@ namespace RS
             return obj;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemarr"></param>
+        /// <returns></returns>
         public List<object> DeserializeDynamicObjItems(string itemarr)
         {
             object obj = JsonConvert.DeserializeObject(itemarr);
+
             if (obj is JArray)
                 return ToDynamics((JArray)obj);
             else if (obj is JObject)
@@ -158,9 +175,9 @@ namespace RS
             JsonSerializerSettings settings = new JsonSerializerSettings();
             //使用默认方式，不更改元数据的key的大小写
             settings.ContractResolver = new DefaultContractResolver();
-           
+
             if (obj == null)
-                return JsonConvert.SerializeObject(obj,settings);
+                return JsonConvert.SerializeObject(obj, settings);
             else
             {
                 var timeConverter = new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" };//这里使用自定义日期格式，默认是ISO8601格式
@@ -168,7 +185,7 @@ namespace RS
                 return JsonConvert.SerializeObject(obj, Formatting.Indented, timeConverter);
             }
         }
-        
+
         /// <summary>
         /// 序列化对象并将生成的 JSON 字符串写入指定的 System.Text.StringBuilder 对象。
         /// </summary>

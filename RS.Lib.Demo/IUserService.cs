@@ -9,5 +9,4 @@ namespace RS.Lib.Demo
     {
         UserShopInfo GetMyShopInfo(string UserID);
     }
-
 }

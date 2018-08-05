@@ -7,22 +7,22 @@ namespace RS.Sys.Auth
     /// </summary>
     public static class PowerHelper
     {
-        static Func<IUser,string,bool> methodForCheckModuleFun;
-        static Func<IUser, Guid, bool> methodForCheckFun;
-        static Func<IUser, string, string, bool> methodForCheckMFandFun;
-        static Func<AppUser> methodForGetUser;
-        public static AppUser GetAppEnvironment()
+        static Func<IAppOperator,string,bool> methodForCheckModuleFun;
+        static Func<IAppOperator, Guid, bool> methodForCheckFun;
+        static Func<IAppOperator, string, string, bool> methodForCheckMFandFun;
+        static Func<IAppOperator> methodForGetUser;
+        public static IAppOperator GetAppEnvironment()
         {
             if (methodForGetUser != null)
                 return methodForGetUser();
             else
-                return new AppUser();
+                return null;
         }
 
         /// <summary>
         /// 注册权限判定方法
         /// </summary>
-        public static void RegiserPowerMethod(Func<AppUser> _methodForGetUser,Func<IUser,string,bool> _methodForCheckModuleFun,Func<IUser,Guid,bool> _methodForCheckFun,Func<IUser,string,string,bool> _methodForCheckMFandFun)
+        public static void RegiserPowerMethod(Func<IAppOperator> _methodForGetUser,Func<IAppOperator, string,bool> _methodForCheckModuleFun,Func<IAppOperator, Guid,bool> _methodForCheckFun,Func<IAppOperator, string,string,bool> _methodForCheckMFandFun)
         {            
             methodForGetUser = _methodForGetUser;
 
@@ -35,7 +35,7 @@ namespace RS.Sys.Auth
         /// 获取是否具有指定模块功能基本权限：根据功能点编号
         /// </summary>
         /// <returns></returns>
-        public static bool CheckIsPower(this IUser u, string ModuleFunCode)
+        public static bool CheckIsPower(this IAppOperator u, string ModuleFunCode)
         {
             if (methodForCheckModuleFun != null)
                 return methodForCheckModuleFun(u, ModuleFunCode);
@@ -49,7 +49,7 @@ namespace RS.Sys.Auth
         /// <param name="u">当前操作用户</param>
         /// <param name="FunID">功能点ID</param>
         /// <returns>true-有权限；false-无权限</returns>
-        public static bool CheckIsPower(this IUser u, Guid FunID)
+        public static bool CheckIsPower(this IAppOperator u, Guid FunID)
         {
             if (methodForCheckFun != null)
                 return methodForCheckFun(u, FunID);
@@ -62,7 +62,7 @@ namespace RS.Sys.Auth
         /// <param name="u"></param>
         /// <param name="mf"></param>
         /// <returns></returns>
-        public static bool CheckIsPower(this IUser u,string ModuleFunCode,string FunCode)
+        public static bool CheckIsPower(this IAppOperator u,string ModuleFunCode,string FunCode)
         {
             if (methodForCheckMFandFun != null)
                 return methodForCheckMFandFun(u, ModuleFunCode, FunCode);

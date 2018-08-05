@@ -6,6 +6,7 @@ namespace RS
 {
     public interface IRSServiceCollection
     {
+        
         /// <summary>
         /// 以生命周期为Scoped方式注册应用服务
         /// </summary>
@@ -22,6 +23,7 @@ namespace RS
         IRSServiceCollection AddTransient(Type serviceType, Type implementationType);
 
         IRSServiceCollection AddSingletion<TService>(TService implementationInstance) where TService : class;
+        IRSServiceCollection AddSingletion(Type serviceType, Type implementationType);
 
         IRSServiceCollection AddScoped<TService>(Func<IServiceProvider, TService> implementationFactory) where TService : class;
     }

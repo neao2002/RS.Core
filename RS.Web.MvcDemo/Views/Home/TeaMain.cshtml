@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "TeaMin";
+}
+
+<h2>教师首页</h2>
+
+
+<div style="line-height:30px">
+    <div>状态：@ViewBag.LoginStatus</div>
+    <div>用户信息：@Html.Raw(ViewBag.User)</div>
+</div>
+
+<div>
+    <a asp-area="" asp-controller="Home" asp-action="TeaLogout">退出</a>
+</div>

@@ -12,7 +12,7 @@ namespace RS.Lib.Demo
 
         public UserShopInfo GetMyShopInfo(string UserID)
         {
-            return store.GetMyShopInfo(UserID, App.GetService<IShopService>());
+            return store.GetMyShopInfo(UserID, App.GetAppService<IShopService>());
         }
     }
 }

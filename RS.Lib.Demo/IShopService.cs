@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace RS.Lib.Demo
 {
+
     public interface IShopService : IAppService
     {
         /// <summary>
@@ -16,6 +17,4 @@ namespace RS.Lib.Demo
         List<DynamicObj> GetShopInfos();
         Task<DynamicObj> GetShopInfo(string ShopCode);
     }
-    
-    
 }

@@ -9,15 +9,52 @@ using RS;
 using RS.Data;
 using RS.Web.Mvc;
 using System.Linq;
+using RS.Web;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtension
     {
-        public static IAppRegister GlobalRegistrar(this IConfiguration config)
+        #region 全局对象初始注册
+        /// <summary>
+        /// 应用全局对象初始化注册
+        /// </summary>
+        /// <param name="config">系统全局配置对象</param>
+        /// <returns>返回注册手柄，以便继续注册</returns>
+        public static IAppRegister GlobalRegistrar<U>(this IConfiguration config) where U:DefaultUser
         {
-            return Global.GlobalRegistrar(RSConfiguration.ToRSConfiguration(config),()=>LoadCompileAssemblies());
+            Global.RegDefaultUserProvider<IDefaultUserProvider,DefaultUserProvider<U>>(new DefaultUserProvider<U>());
+            return Global.GlobalRegistrar(RSConfiguration.ToRSConfiguration(config), () => LoadCompileAssemblies());
         }
+        public static IAppRegister GlobalRegistrar(this IConfiguration config) 
+        {
+            Global.RegDefaultUserProvider<IDefaultUserProvider, DefaultUserProvider<DefaultUser>>(new DefaultUserProvider<DefaultUser>());
+            return Global.GlobalRegistrar(RSConfiguration.ToRSConfiguration(config), () => LoadCompileAssemblies());
+        }
+        /// <summary>
+        /// 全局应用集供应者初始注册
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        public static IServiceProvider RegServiceProvider(this IServiceProvider provider)
+        {
+            Global.RegServiceProvider(provider);
+            return provider;
+        }
+
+        public static IAppRegister GlobalRegistrar<T,E>(this IConfiguration config, E userProvider) where T:IAppUserProvider where E: T
+        {
+            Global.RegDefaultUserProvider<T,E>(userProvider);
+            return Global.GlobalRegistrar(RSConfiguration.ToRSConfiguration(config), () => LoadCompileAssemblies());
+        }
+        #endregion
+
+        #region 业务应用服务组件注册
+        /// <summary>
+        /// 进行数据库服务对象注册
+        /// </summary>
+        /// <param name="services">服务对象集</param>
+        /// <returns>返回服务对象集，以便继续进行注册</returns>
         public static IServiceCollection AddAppDbContext(this IServiceCollection services)
         {
             services.AddSingleton<IDbContextFactory>(Global.DbContextFactory);//以Globals.DbContextFactory作为全局数据库上下文构建工厂
@@ -28,23 +65,25 @@ namespace Microsoft.Extensions.DependencyInjection
             });
             return services;
         }
+
         /// <summary>
-        /// 注册当前所有应用服务
+        /// 注册当前所有业务应用服务
         /// </summary>
-        /// <param name="services"></param>
-        /// <returns></returns>
+        /// <param name="services">服务对象集</param>
+        /// <returns>返回服务对象集，以便继续进行注册</returns>
         public static IServiceCollection AddAppServices(this IServiceCollection services)
         {
+            //默认用户角色服务注册
+            if (Global.DefaultUserProvider != null)
+            {
+                Type type = Global.DefaultUserProviderType;// .DefaultUserProvider.GetType();
+                services.AddSingleton(type, Global.DefaultUserProvider);
+                services.AddScoped(Global.DefaultUserType,a => Global.DefaultUserProvider.GetAppOperator());
+            }
+
             RSServiceCollection.Services(services).RegisterAppServices();
             return services;
         }
-
-        public static IServiceProvider RegServiceProvider(this IServiceProvider provider)
-        {
-            Global.RegServiceProvider(provider);
-            return provider;
-        }
-
 
         public static List<Assembly> LoadCompileAssemblies()
         {
@@ -59,6 +98,27 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return ret;
         }
+
+        #endregion
+
+        #region 用户会话注册
+
+        public static IServiceCollection AddMoreUserProvider<TService, TImplementation>(this IServiceCollection services) where TService :class, IAppUserProvider
+                                                                                                                           where TImplementation : class, TService
+        {
+            services.AddSingleton<TService,TImplementation>();
+
+            services.AddScoped<IAppOperatorUser<TService>>(a =>
+            {
+                return (IAppOperatorUser<TService>)a.GetService<TService>().GetAppOperator();
+            });
+
+            return services;
+        }
+       
+
+        #endregion
+
     }
 }
 

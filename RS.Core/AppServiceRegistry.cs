@@ -9,46 +9,73 @@ using System.Linq;
 
 namespace RS
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class AppServiceRegistry
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
         public static void RegisterAppServices(this IRSServiceCollection services)
         {
             List<Type> implementationTypes = AppServiceTypeFinder.FindFromCompileLibraries();
             RegisterAppServices(services, implementationTypes);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="assembly"></param>
         public static void RegisterAppServices(this IRSServiceCollection services, Assembly assembly)
         {
             List<Type> implementationTypes = AppServiceTypeFinder.Find(assembly);
             RegisterAppServices(services, implementationTypes);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="path"></param>
         public static void RegisterAppServicesFromDirectory(this IRSServiceCollection services, string path)
         {
             List<Type> implementationTypes = AppServiceTypeFinder.FindFromDirectory(path);
             RegisterAppServices(services, implementationTypes);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="implementationTypes"></param>
         static void RegisterAppServices(this IRSServiceCollection services, List<Type> implementationTypes)
         {
-            Type appServiceType = typeof(IAppService);
+            //需要自动注册的服务类型
+            List<Type> ServiceTypes = new List<Type>(){
+                typeof(IAppService)
+            };
             foreach (Type implementationType in implementationTypes)
             {
-                var implementedAppServiceTypes = implementationType.GetTypeInfo().ImplementedInterfaces.Where(a => a != appServiceType && appServiceType.IsAssignableFrom(a));
+                var implementedAppServiceTypes = implementationType.GetTypeInfo().ImplementedInterfaces.Where(a => IsAssignableFrom(ServiceTypes,a));
 
                 foreach (Type implementedAppServiceType in implementedAppServiceTypes)
                 {
-                    if (typeof(AppServiceBase).IsAssignableFrom(implementationType)|| typeof(AppServiceBase<>).IsAssignableFrom(implementationType))
-                        services.AddScoped(implementedAppServiceType, implementationType);                    
-                    else
+                    //如果是会话服务对象，则进行单例创建,也就是每一类角色，只会创建一个提供者角色
+                    if (typeof(AppServiceBase).IsAssignableFrom(implementationType) || typeof(AppServiceBase<>).IsAssignableFrom(implementationType))
+                        services.AddScoped(implementedAppServiceType, implementationType);
+                    else //其它的则每次要用时都创建一个实例
                         services.AddTransient(implementedAppServiceType, implementationType);
                 }
             }
 
+        }
 
-
-
-
+        static bool IsAssignableFrom(List<Type> types,Type a)
+        {
+            return types.Exists(appServiceType => a != appServiceType && appServiceType.IsAssignableFrom(a));
         }
     }
 

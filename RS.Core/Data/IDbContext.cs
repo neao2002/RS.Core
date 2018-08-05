@@ -11,6 +11,7 @@ namespace RS.Data
     /// </summary>
     public interface IDbContext
     {
+        
         #region 连接及事务
         /// <summary>
         /// 获取当前数据链接
